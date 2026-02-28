@@ -7,6 +7,7 @@ import { useTopicsStore } from "@/stores/topics-store"
 import { Badge } from "@/components/ui/badge"
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
 import { ChatPanel } from "@/components/ChatPanel"
+import { Separator } from "@/components/ui/separator"
 
 const categoryVariant: Record<string, "breaking" | "paper" | "trending" | "repo" | "podcast"> = {
   BREAKING: "breaking",
@@ -14,6 +15,75 @@ const categoryVariant: Record<string, "breaking" | "paper" | "trending" | "repo"
   TRENDING: "trending",
   REPO: "repo",
   PODCAST: "podcast",
+}
+
+const categoryConfig: Record<string, { emoji: string; variant: "breaking" | "paper" | "trending" | "repo" | "podcast" }> = {
+  BREAKING: { emoji: "🔴", variant: "breaking" },
+  "NEW PAPER": { emoji: "📄", variant: "paper" },
+  TRENDING: { emoji: "🔥", variant: "trending" },
+  REPO: { emoji: "📦", variant: "repo" },
+  PODCAST: { emoji: "🎙️", variant: "podcast" },
+}
+
+function StudioHome() {
+  const topics = useTopicsStore((s) => s.topics)
+
+  return (
+    <div className="mx-auto max-w-5xl px-6 py-8">
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+        {/* Topic list */}
+        <div className="lg:col-span-2">
+          <h1 className="text-2xl font-bold font-serif mb-2">Studio</h1>
+          <p className="text-sm text-text-muted mb-6">
+            Your curated feed. Click a topic to dive deeper.
+          </p>
+
+          <div>
+            {topics.map((topic) => {
+              const config = categoryConfig[topic.category] ?? categoryConfig.BREAKING
+              return (
+                <div key={topic.id}>
+                  <Link
+                    to={`/catchup/${topic.slug}`}
+                    className="block py-5 transition-colors hover:bg-bg-muted/50 -mx-2 px-2 rounded-lg"
+                  >
+                    <div className="mb-2">
+                      <Badge variant={config.variant}>
+                        <span>{config.emoji}</span>
+                        {topic.category}
+                      </Badge>
+                    </div>
+                    <h2 className="mb-2 text-lg font-bold text-text">{topic.title}</h2>
+                    <p className="mb-2 text-sm leading-relaxed text-text-muted line-clamp-2">
+                      {topic.description}
+                    </p>
+                    <p className="text-xs text-text-subtle">{topic.sources}</p>
+                  </Link>
+                  <Separator />
+                </div>
+              )
+            })}
+          </div>
+        </div>
+
+        {/* Sidebar chat */}
+        <div className="lg:col-span-1">
+          <div className="sticky top-20 rounded-xl border">
+            <div className="border-b px-4 py-3">
+              <p className="text-sm font-semibold">Ask Cortex</p>
+            </div>
+            <div className="h-[500px]">
+              <ChatPanel
+                title="Cortex"
+                initialMessage="Hi! I'm your AI research companion. Ask me about any of today's topics, or anything else you're curious about."
+                context={topics.map((t) => `${t.category}: ${t.title} — ${t.description}`).join("\n\n")}
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
 }
 
 export function CatchupPage() {
@@ -24,10 +94,15 @@ export function CatchupPage() {
     if (slug) selectTopic(slug)
   }, [slug, selectTopic])
 
+  // No slug — show studio landing
+  if (!slug) {
+    return <StudioHome />
+  }
+
   if (!selectedTopic) {
     return (
       <div className="mx-auto max-w-5xl px-6 py-8">
-        <Link to="/" className="inline-flex items-center gap-1 text-sm text-text-muted hover:text-text">
+        <Link to="/catchup" className="inline-flex items-center gap-1 text-sm text-text-muted hover:text-text">
           <ArrowLeft className="h-4 w-4" />
           Back
         </Link>
@@ -38,7 +113,7 @@ export function CatchupPage() {
 
   return (
     <div className="mx-auto max-w-5xl px-6 py-8">
-      <Link to="/" className="mb-4 inline-flex items-center gap-1 text-sm text-text-muted hover:text-text">
+      <Link to="/catchup" className="mb-4 inline-flex items-center gap-1 text-sm text-text-muted hover:text-text">
         <ArrowLeft className="h-4 w-4" />
         Back
       </Link>
@@ -124,7 +199,7 @@ export function CatchupPage() {
           </Tabs>
         </div>
 
-        {/* Sidebar: CopilotKit chat */}
+        {/* Sidebar: chat */}
         <div className="lg:col-span-1">
           <div className="sticky top-20 rounded-xl border">
             <div className="border-b px-4 py-3">
