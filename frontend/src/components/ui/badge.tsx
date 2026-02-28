@@ -12,6 +12,9 @@ const badgeVariants = cva(
         trending: "bg-amber-50 text-cat-trending",
         repo: "bg-purple-50 text-purple-600",
         podcast: "bg-blue-50 text-blue-600",
+        new: "bg-blue-50 text-blue-600",
+        read: "bg-green-50 text-green-600",
+        archived: "bg-bg-muted text-text-subtle",
       },
     },
     defaultVariants: {
