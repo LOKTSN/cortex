@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
-import { Send, Loader2, Copy, ThumbsUp, ThumbsDown, MoreHorizontal } from 'lucide-react'
+import { Send, Copy, ThumbsUp, ThumbsDown, MoreHorizontal } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { ScrollArea } from '@/components/ui/scroll-area'
 
