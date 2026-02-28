@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { FileText, FolderOpen } from "lucide-react"
+import { FolderOpen } from "lucide-react"
 import { FileTree, type FileSelection } from "@/components/edge/FileTree"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { mockTopics } from "@/lib/mock-data"
@@ -23,8 +23,6 @@ export function EdgePage() {
   const [selected, setSelected] = useState<FileSelection | null>(null)
 
   const content = selected ? getFileContent(selected.slug, selected.filename) : null
-  const isMarkdown = selected?.filename.endsWith(".md")
-
   return (
     <div className="flex h-[calc(100vh-57px-73px)]">
       {/* File tree sidebar */}
@@ -46,9 +44,9 @@ export function EdgePage() {
               <span className="font-medium text-text">{selected.filename}</span>
             </div>
 
-            {/* File content */}
+            {/* Markdown content */}
             <ScrollArea className="flex-1">
-              {isMarkdown && content ? (
+              {content ? (
                 <div className="max-w-3xl mx-auto px-8 py-6">
                   <article className="prose prose-sm max-w-none
                     prose-headings:font-serif prose-headings:text-text
@@ -65,14 +63,6 @@ export function EdgePage() {
                   ">
                     <ReactMarkdown remarkPlugins={[remarkGfm]}>{content}</ReactMarkdown>
                   </article>
-                </div>
-              ) : !isMarkdown ? (
-                <div className="flex h-full items-center justify-center">
-                  <div className="text-center text-text-subtle">
-                    <FileText className="h-8 w-8 mx-auto mb-3 opacity-30" />
-                    <p className="text-sm text-text-muted">{selected.filename}</p>
-                    <p className="text-xs mt-1">Media files will be available once generated.</p>
-                  </div>
                 </div>
               ) : (
                 <div className="flex h-full items-center justify-center">

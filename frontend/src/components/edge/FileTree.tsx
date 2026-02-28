@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { ChevronDown, ChevronRight, Folder, FileText, FolderOpen, Calendar, Image, Music, Video } from "lucide-react"
+import { ChevronDown, ChevronRight, Folder, FileText, FolderOpen, Calendar } from "lucide-react"
 import { mockEdgeTopics, mockTopics, mockCollections } from "@/lib/mock-data"
 import { ScrollArea } from "@/components/ui/scroll-area"
 
@@ -14,11 +14,7 @@ interface FileTreeProps {
   onSelect: (selection: FileSelection) => void
 }
 
-function getFileIcon(filename: string) {
-  if (filename.endsWith(".md")) return <FileText className="h-3 w-3 shrink-0 text-text-muted" />
-  if (filename.endsWith(".png")) return <Image className="h-3 w-3 shrink-0 text-text-muted" />
-  if (filename.endsWith(".mp3")) return <Music className="h-3 w-3 shrink-0 text-text-muted" />
-  if (filename.endsWith(".mp4")) return <Video className="h-3 w-3 shrink-0 text-text-muted" />
+function getFileIcon() {
   return <FileText className="h-3 w-3 shrink-0 text-text-muted" />
 }
 
@@ -89,7 +85,8 @@ export function FileTree({ selected, onSelect }: FileTreeProps) {
                           const isOpen = openTopics.has(topicKey)
                           // Get files from mockTopics
                           const mockTopic = mockTopics.find((t) => t.slug === topic.slug)
-                          const files = mockTopic?.files ?? ["synthesis.md", "raw_sources.md", "notes.md"]
+                          const files = (mockTopic?.files ?? ["synthesis.md", "raw_sources.md", "notes.md"])
+                            .filter((f) => f.endsWith(".md"))
 
                           return (
                             <div key={topicKey} className="ml-3">
@@ -123,7 +120,7 @@ export function FileTree({ selected, onSelect }: FileTreeProps) {
                                           : "text-text-muted hover:bg-bg-muted hover:text-text"
                                       }`}
                                     >
-                                      {getFileIcon(filename)}
+                                      {getFileIcon()}
                                       <span className="truncate">{filename}</span>
                                     </button>
                                   )
