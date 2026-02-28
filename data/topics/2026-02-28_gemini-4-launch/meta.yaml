@@ -1,0 +1,19 @@
+title: "Google releases Gemini 4 with native code execution"
+slug: "gemini-4-launch"
+date: "2026-02-28"
+category: "BREAKING"
+sources:
+  - { url: "https://arxiv.org/abs/2602.18901", type: "arxiv", title: "Gemini 4 Technical Report" }
+  - { url: "https://blog.google/technology/ai/gemini-4/", type: "blog", title: "Google Blog" }
+  - { url: "https://news.ycombinator.com/item?id=39281247", type: "hn", points: 847 }
+relevance_score: 0.94
+relevance_reason: "Directly affects model deployment pipelines"
+tags: ["LLM", "Google", "Code Generation"]
+status: "new"
+generated:
+  synthesis: true
+  audio: false
+  video: false
+  jingle: false
+  diagrams: []
+description: "Google DeepMind announced Gemini 4, featuring native code execution capabilities that allow the model to write, run, and iterate on code within its reasoning loop. Early benchmarks show a 34% improvement on SWE-bench over Gemini 2.5 Pro. The model also introduces a 2M-token context window and native tool use."

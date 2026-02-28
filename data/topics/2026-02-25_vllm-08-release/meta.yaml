@@ -1,0 +1,18 @@
+title: "vLLM 0.8: 3x inference throughput with disaggregated prefill"
+slug: "vllm-08-release"
+date: "2026-02-25"
+category: "REPO"
+sources:
+  - { url: "https://github.com/vllm-project/vllm", type: "github", title: "GitHub" }
+  - { url: "https://blog.vllm.ai/2026/02/25/vllm-08.html", type: "blog", title: "vLLM Blog" }
+relevance_score: 0.85
+relevance_reason: "Directly relevant to inference optimization work"
+tags: ["Inference", "Open Source", "Performance"]
+status: "new"
+generated:
+  synthesis: true
+  audio: false
+  video: false
+  jingle: false
+  diagrams: []
+description: "The vLLM team released v0.8 with disaggregated prefill, separating prompt processing from token generation across GPU clusters. Production deployments report 3x throughput improvements with sub-100ms TTFT on 70B parameter models."

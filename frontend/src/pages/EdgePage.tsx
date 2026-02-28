@@ -58,7 +58,12 @@ export function EdgePage() {
         {/* Right panel */}
         <div className="flex-1 overflow-auto">
           {view === "graph" ? (
-            <GraphView />
+            <GraphView
+              onSelectTopic={(slug, name) => {
+                setSelected({ slug, name })
+                setView("file")
+              }}
+            />
           ) : selected ? (
             <TopicPreview slug={selected.slug} name={selected.name} />
           ) : (
