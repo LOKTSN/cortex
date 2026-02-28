@@ -6,7 +6,7 @@ import remarkGfm from "remark-gfm"
 import { useTopicsStore } from "@/stores/topics-store"
 import { Badge } from "@/components/ui/badge"
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
-import { ChatPlaceholder } from "@/components/ui/chat-placeholder"
+import { ChatPanel } from "@/components/ChatPanel"
 
 const categoryVariant: Record<string, "breaking" | "paper" | "trending" | "repo" | "podcast"> = {
   BREAKING: "breaking",
@@ -131,9 +131,10 @@ export function CatchupPage() {
               <p className="text-sm font-semibold">Ask about this topic</p>
             </div>
             <div className="h-[400px]">
-              <ChatPlaceholder
+              <ChatPanel
                 title="Cortex"
                 initialMessage={`I can help you understand "${selectedTopic.title}". Ask me anything about this topic!`}
+                context={selectedTopic.synthesis}
               />
             </div>
           </div>

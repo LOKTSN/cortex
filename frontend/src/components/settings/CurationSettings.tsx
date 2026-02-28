@@ -3,7 +3,7 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Button } from "@/components/ui/button"
-import { ChatPlaceholder } from "@/components/ui/chat-placeholder"
+import { ChatPanel } from "@/components/ChatPanel"
 
 export function CurationSettings() {
   const { profile, toggleSource } = useProfileStore()
@@ -93,9 +93,10 @@ export function CurationSettings() {
         </CardHeader>
         <CardContent className="flex-1">
           <div className="h-[500px] rounded-lg border">
-            <ChatPlaceholder
+            <ChatPanel
               title="Cortex"
               initialMessage="I've loaded the AI/ML preset. It covers arxiv, HN, and ML blogs. What's your role? That'll help me tune the sources and depth."
+              context={`User profile: Field=${profile.field}, Level=${profile.level}, Depth=${profile.depth}, Focus Areas=${profile.focusAreas.join(', ')}, Goal=${profile.goal}`}
             />
           </div>
         </CardContent>
