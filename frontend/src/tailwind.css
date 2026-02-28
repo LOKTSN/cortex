@@ -1,5 +1,4 @@
 @import "tailwindcss";
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
 @plugin "tailwindcss-animate";
 
 /* ============================================================
@@ -63,20 +62,20 @@
 :root {
   color-scheme: light;
 
-  /* ─── Backgrounds (light) ─── */
-  --bg-base:          #E8E8EE;
-  --bg-backdrop:      #DDDDE5;
+  /* ─── Backgrounds (light — Google-style flat white) ─── */
+  --bg-base:          #F8F9FA;
+  --bg-backdrop:      #F1F3F4;
   --bg-surface:       #FFFFFF;
   --bg-panel:         #FFFFFF;
-  --bg-card:          rgba(0, 0, 0, 0.03);
-  --bg-card-hover:    rgba(0, 0, 0, 0.05);
-  --bg-raised:        rgba(0, 0, 0, 0.06);
-  --bg-overlay:       rgba(255, 255, 255, 0.95);
+  --bg-card:          rgba(0, 0, 0, 0.02);
+  --bg-card-hover:    rgba(0, 0, 0, 0.04);
+  --bg-raised:        rgba(0, 0, 0, 0.04);
+  --bg-overlay:       rgba(255, 255, 255, 0.97);
 
-  /* ─── Ingrained (recessed into surface — same as body level) ─── */
-  --bg-ingrained:        #E8E8EE;
-  --bg-ingrained-hover:  #DDDDE5;
-  --bg-ingrained-active: #D2D2DA;
+  /* ─── Ingrained (recessed into surface — pressed look) ─── */
+  --bg-ingrained:        #F1F3F4;
+  --bg-ingrained-hover:  #E8EAED;
+  --bg-ingrained-active: #DADCE0;
 
   /* ─── Text ─── */
   --color-text:        #111118;
@@ -84,24 +83,24 @@
   --color-text-subtle: #9898A8;
   --color-text-ghost:  #C0C0CC;
 
-  /* ─── Borders ─── */
-  --color-border:        rgba(0, 0, 0, 0.10);
-  --color-border-subtle: rgba(0, 0, 0, 0.06);
-  --color-border-strong: rgba(0, 0, 0, 0.18);
-  --color-border-accent: rgba(91, 163, 217, 0.50);
+  /* ─── Borders (lighter, Google-style) ─── */
+  --color-border:        rgba(0, 0, 0, 0.08);
+  --color-border-subtle: rgba(0, 0, 0, 0.05);
+  --color-border-strong: rgba(0, 0, 0, 0.15);
+  --color-border-accent: rgba(91, 163, 217, 0.40);
   --color-border-glass:  rgba(0, 0, 0, 0.08);
 
   /* ─── Accent dims ─── */
   --color-accent-dim:  rgba(91, 163, 217, 0.15);
   --color-accent-glow: rgba(91, 163, 217, 0.25);
 
-  /* ─── Shadows (light) ─── */
-  --shadow-card:       0 1px 4px rgba(0,0,0,0.10), 0 0 0 1px rgba(0,0,0,0.05);
-  --shadow-card-hover: 0 4px 16px rgba(0,0,0,0.14), 0 0 0 1px rgba(0,0,0,0.08);
-  --shadow-panel:      0 4px 20px rgba(0,0,0,0.12), 0 1px 4px rgba(0,0,0,0.06);
-  --shadow-float:      0 8px 32px rgba(0,0,0,0.16), 0 0 0 1px rgba(0,0,0,0.06);
-  --shadow-modal:      0 20px 60px rgba(0,0,0,0.30), 0 0 0 1px rgba(0,0,0,0.08);
-  --shadow-glow:       0 0 0 2px rgba(91,163,217,0.30), 0 0 20px rgba(91,163,217,0.15);
+  /* ─── Shadows (flat, minimal — Google-style) ─── */
+  --shadow-card:       0 1px 2px rgba(0,0,0,0.04);
+  --shadow-card-hover: 0 1px 3px rgba(0,0,0,0.08);
+  --shadow-panel:      0 1px 3px rgba(0,0,0,0.06);
+  --shadow-float:      0 4px 16px rgba(0,0,0,0.12), 0 0 0 1px rgba(0,0,0,0.04);
+  --shadow-modal:      0 12px 40px rgba(0,0,0,0.20), 0 0 0 1px rgba(0,0,0,0.06);
+  --shadow-glow:       0 0 0 2px rgba(91,163,217,0.25);
 
   /* ─── Glass inner highlight ─── */
   --glass-highlight:        inset 0 -1px 0 rgba(0, 0, 0, 0.06);
@@ -238,40 +237,36 @@ body {
    ============================================================ */
 
 .glass-panel {
-  background: var(--bg-surface);
-  border: 1px solid var(--color-border-glass);
-  box-shadow: var(--glass-highlight), var(--shadow-panel);
+  background: #FFFFFF;
+  border: 1px solid rgba(0, 0, 0, 0.08);
 }
 
 .glass-card {
-  background: var(--bg-card);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-card);
-  transition: box-shadow var(--dur-normal) var(--ease-standard),
-              transform var(--dur-fast) var(--ease-standard);
+  background: #FFFFFF;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 12px;
+  transition: background 150ms ease;
 }
 .glass-card:hover {
-  box-shadow: var(--shadow-card-hover);
-  transform: translateY(-1px);
+  background: rgba(0, 0, 0, 0.015);
 }
 
 .glass-float {
-  background: var(--bg-overlay);
+  background: rgba(255, 255, 255, 0.96);
   backdrop-filter: blur(20px) saturate(160%);
   -webkit-backdrop-filter: blur(20px) saturate(160%);
-  border: 1px solid var(--color-border-glass);
-  border-radius: var(--radius-xl);
-  box-shadow: var(--glass-highlight), var(--shadow-float);
+  border: 1px solid rgba(0, 0, 0, 0.10);
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.14), 0 1px 3px rgba(0,0,0,0.06);
 }
 
 .glass-modal {
-  background: var(--bg-overlay);
+  background: rgba(255, 255, 255, 0.96);
   backdrop-filter: blur(24px) saturate(180%);
   -webkit-backdrop-filter: blur(24px) saturate(180%);
-  border: 1px solid var(--color-border-glass);
-  border-radius: var(--radius-2xl);
-  box-shadow: var(--glass-highlight), var(--shadow-modal);
+  border: 1px solid rgba(0, 0, 0, 0.10);
+  border-radius: 20px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.20), 0 1px 3px rgba(0,0,0,0.08);
 }
 
 /* ============================================================
@@ -290,3 +285,68 @@ body {
 
 .animate-fade-in  { animation: fadeIn 0.15s var(--ease-enter); }
 .animate-slide-in { animation: slideIn 0.25s var(--ease-enter); }
+
+/* ============================================================
+   Form inputs
+   ============================================================ */
+.form-input {
+  height: 32px;
+  padding: 0 10px;
+  font-size: 13px;
+  background: var(--bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  color: var(--color-text);
+  outline: none;
+  transition: border-color var(--dur-normal) var(--ease-standard),
+              box-shadow var(--dur-normal) var(--ease-standard);
+}
+.form-input::placeholder { color: var(--color-text-ghost); }
+.form-input:focus {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 2px var(--color-accent-dim);
+}
+
+/* ============================================================
+   Markdown prose (learning workspace)
+   ============================================================ */
+.prose-cortex {
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--color-text);
+}
+.prose-cortex h1 { font-size: 1.25rem; font-weight: 700; margin-top: 0; margin-bottom: 0.75em; }
+.prose-cortex h2 { font-size: 1.05rem; font-weight: 600; margin-top: 1.5em; margin-bottom: 0.5em; color: var(--color-text); }
+.prose-cortex h3 { font-size: 0.925rem; font-weight: 600; margin-top: 1.25em; margin-bottom: 0.4em; color: var(--color-text-muted); }
+.prose-cortex p { margin-bottom: 0.75em; }
+.prose-cortex ul, .prose-cortex ol { margin-bottom: 0.75em; padding-left: 1.5em; }
+.prose-cortex li { margin-bottom: 0.25em; }
+.prose-cortex strong { font-weight: 600; }
+.prose-cortex code {
+  font-family: var(--font-mono);
+  font-size: 0.85em;
+  background: var(--bg-raised);
+  padding: 0.15em 0.35em;
+  border-radius: 4px;
+}
+.prose-cortex pre {
+  background: var(--bg-raised);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-md);
+  padding: 0.75em 1em;
+  overflow-x: auto;
+  margin-bottom: 0.75em;
+}
+.prose-cortex pre code { background: none; padding: 0; font-size: 0.8em; }
+.prose-cortex table { width: 100%; border-collapse: collapse; margin-bottom: 0.75em; font-size: 0.85em; }
+.prose-cortex th { text-align: left; font-weight: 600; padding: 0.4em 0.6em; border-bottom: 2px solid var(--color-border); }
+.prose-cortex td { padding: 0.4em 0.6em; border-bottom: 1px solid var(--color-border-subtle); }
+.prose-cortex blockquote {
+  border-left: 3px solid var(--color-accent);
+  padding-left: 1em;
+  margin: 0.75em 0;
+  color: var(--color-text-muted);
+}
+.prose-cortex hr { border: none; border-top: 1px solid var(--color-border-subtle); margin: 1.5em 0; }
+.prose-cortex a { color: var(--color-accent); text-decoration: underline; }
+
