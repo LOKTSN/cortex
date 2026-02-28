@@ -1,0 +1,47 @@
+category: trending
+date: '2026-03-01'
+generated:
+  audio: false
+  diagrams: []
+  jingle: false
+  synthesis: true
+  video: false
+relevance_reason: AI industry newsletter covering AI agents, distillation (training-related),
+  optimization, and autotuning - relevant to AI/ML field and training methods.
+relevance_score: 0.75
+slug: the-batch-issue-342
+sources:
+- points: 212
+  title: Don't trust AI agents
+  type: hackernews
+  url: https://nanoclaw.dev/blog/nanoclaw-security-model
+- points: 142
+  title: What AI coding costs you
+  type: hackernews
+  url: https://tomwojcik.com/posts/2026-02-15/finding-the-right-amount-of-ai/
+- title: How much does distillation really matter for Chinese LLMs?
+  type: substack
+  url: https://www.interconnects.ai/p/how-much-does-distillation-really
+- title: Reply guy
+  type: blog
+  url: https://simonwillison.net/2026/Feb/23/reply-guy/#atom-everything
+- title: Accelerating Autotuning in Helion with Bayesian Optimization
+  type: blog
+  url: https://pytorch.org/blog/accelerating-autotuning-in-helion/
+- title: 'Nano Banana 2: Combining Pro capabilities with lightning-fast speed'
+  type: blog
+  url: https://deepmind.google/blog/nano-banana-2-combining-pro-capabilities-with-lightning-fast-speed/
+- title: The Batch - Issue 342
+  type: newsletter
+  url: https://www.deeplearning.ai/the-batch/issue-342
+- title: The Batch - Issue 341
+  type: newsletter
+  url: https://www.deeplearning.ai/the-batch/issue-341
+- title: The Batch - Issue 340
+  type: newsletter
+  url: https://www.deeplearning.ai/the-batch/issue-340
+status: new
+tags:
+- batch
+- issue
+title: The Batch - Issue 342

@@ -1,9 +1,10 @@
-import { useState, useRef, useEffect } from 'react'
-import { Send, Copy, ThumbsUp, ThumbsDown, MoreHorizontal, Search, Globe, Image, FileText, Terminal, ChevronDown, ChevronRight } from 'lucide-react'
+import { useState, useRef, useEffect, useCallback } from 'react'
+import { Send, Copy, ThumbsUp, ThumbsDown, MoreHorizontal, Search, Globe, Image, FileText, Terminal, ChevronDown, ChevronRight, Mic, MicOff, Volume2, Loader2 } from 'lucide-react'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import { Button } from '@/components/ui/button'
 import { ScrollArea } from '@/components/ui/scroll-area'
+import { useVoiceChat, isVoiceSupported, type VoiceState } from '@/hooks/useVoiceChat'
 
 interface ToolCall {
   name: string
@@ -14,6 +15,8 @@ interface Message {
   role: 'user' | 'assistant'
   content: string
   tools_used?: ToolCall[]
+  isVoice?: boolean
+  isStreaming?: boolean
 }
 
 interface ChatPanelProps {
@@ -40,7 +43,6 @@ function ToolCallChip({ tool }: { tool: ToolCall }) {
   const Icon = meta.icon
   const Chevron = expanded ? ChevronDown : ChevronRight
 
-  // Build a short summary from args
   const summary = tool.args.query as string
     || tool.args.url as string
     || tool.args.prompt as string
@@ -59,7 +61,7 @@ function ToolCallChip({ tool }: { tool: ToolCall }) {
         <span className="font-medium text-[var(--color-text-subtle)]">{meta.label}</span>
         {summary && (
           <span className="text-[var(--color-text-ghost)] truncate flex-1">
-            {summary.length > 50 ? summary.slice(0, 50) + '…' : summary}
+            {summary.length > 50 ? summary.slice(0, 50) + '...' : summary}
           </span>
         )}
         <Chevron size={10} className="text-[var(--color-text-ghost)] shrink-0" />
@@ -75,6 +77,41 @@ function ToolCallChip({ tool }: { tool: ToolCall }) {
   )
 }
 
+function VoiceStateIndicator({ state, transcript }: { state: VoiceState; transcript: string }) {
+  if (state === 'idle') return null
+
+  return (
+    <div className="flex items-center gap-2 px-4 py-2 text-xs">
+      {state === 'listening' && (
+        <>
+          <span className="relative flex h-2.5 w-2.5">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75" />
+            <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-500" />
+          </span>
+          <span className="text-red-600 font-medium">Listening...</span>
+          {transcript && (
+            <span className="text-[var(--color-text-subtle)] italic truncate flex-1">
+              {transcript}
+            </span>
+          )}
+        </>
+      )}
+      {state === 'processing' && (
+        <>
+          <Loader2 size={12} className="animate-spin text-[var(--color-accent)]" />
+          <span className="text-[var(--color-accent)] font-medium">Thinking...</span>
+        </>
+      )}
+      {state === 'speaking' && (
+        <>
+          <Volume2 size={12} className="text-green-600 animate-pulse" />
+          <span className="text-green-600 font-medium">Speaking...</span>
+        </>
+      )}
+    </div>
+  )
+}
+
 export function ChatPanel({ title, initialMessage, context }: ChatPanelProps) {
   const [messages, setMessages] = useState<Message[]>([
     { role: 'assistant', content: initialMessage },
@@ -82,10 +119,88 @@ export function ChatPanel({ title, initialMessage, context }: ChatPanelProps) {
   const [input, setInput] = useState('')
   const [loading, setLoading] = useState(false)
   const bottomRef = useRef<HTMLDivElement>(null)
+  const streamingContentRef = useRef('')
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [messages])
+
+  // Voice chat integration
+  const onTranscript = useCallback((text: string) => {
+    // Add user's voice message to chat
+    setMessages((prev) => [...prev, { role: 'user', content: text, isVoice: true }])
+    // Add a placeholder for the streaming response
+    streamingContentRef.current = ''
+    setMessages((prev) => [
+      ...prev,
+      { role: 'assistant', content: '', isVoice: true, isStreaming: true },
+    ])
+  }, [])
+
+  const onResponseChunk = useCallback((chunk: string) => {
+    streamingContentRef.current += chunk
+    setMessages((prev) => {
+      const updated = [...prev]
+      const last = updated[updated.length - 1]
+      if (last && last.isStreaming) {
+        updated[updated.length - 1] = { ...last, content: streamingContentRef.current }
+      }
+      return updated
+    })
+  }, [])
+
+  const onResponseDone = useCallback((fullText: string) => {
+    setMessages((prev) => {
+      const updated = [...prev]
+      const last = updated[updated.length - 1]
+      if (last && last.isStreaming) {
+        updated[updated.length - 1] = {
+          ...last,
+          content: fullText,
+          isStreaming: false,
+        }
+      }
+      return updated
+    })
+    streamingContentRef.current = ''
+  }, [])
+
+  const onVoiceError = useCallback((error: string) => {
+    setMessages((prev) => {
+      // Remove streaming placeholder if present
+      const updated = [...prev]
+      const last = updated[updated.length - 1]
+      if (last && last.isStreaming) {
+        updated[updated.length - 1] = {
+          ...last,
+          content: `Voice error: ${error}`,
+          isStreaming: false,
+        }
+      } else {
+        updated.push({ role: 'assistant', content: `Voice error: ${error}` })
+      }
+      return updated
+    })
+  }, [])
+
+  // Plain message objects for the voice hook (strip UI-only fields)
+  const plainMessages = messages
+    .filter((m) => m.content) // skip empty
+    .map((m) => ({ role: m.role, content: m.content }))
+
+  const {
+    voiceState,
+    interimTranscript,
+    toggleVoice,
+    isSupported: voiceSupported,
+  } = useVoiceChat({
+    onTranscript,
+    onResponseChunk,
+    onResponseDone,
+    onError: onVoiceError,
+    context,
+    messages: plainMessages,
+  })
 
   const sendMessage = async () => {
     const text = input.trim()
@@ -125,14 +240,21 @@ export function ChatPanel({ title, initialMessage, context }: ChatPanelProps) {
     }
   }
 
+  const isVoiceBusy = voiceState === 'listening' || voiceState === 'processing' || voiceState === 'speaking'
+
   return (
     <div className="flex flex-col h-full overflow-hidden">
       {/* Header */}
       <div className="px-4 py-3 border-b border-[var(--color-border)] flex items-center justify-between shrink-0">
         <span className="text-sm font-medium text-[var(--color-text)]">{title}</span>
-        <Button variant="ghost" size="icon-sm">
-          <MoreHorizontal size={14} />
-        </Button>
+        <div className="flex items-center gap-1">
+          {voiceState === 'speaking' && (
+            <span className="text-[10px] text-green-600 font-medium mr-1">Playing audio</span>
+          )}
+          <Button variant="ghost" size="icon-sm">
+            <MoreHorizontal size={14} />
+          </Button>
+        </div>
       </div>
 
       {/* Messages */}
@@ -142,7 +264,14 @@ export function ChatPanel({ title, initialMessage, context }: ChatPanelProps) {
             <div key={i}>
               {msg.role === 'user' ? (
                 <div className="flex justify-end">
-                  <div className="bg-[var(--color-accent-dim)] border border-[var(--color-border-accent)] text-[var(--color-text)] rounded-2xl rounded-br-sm px-4 py-2.5 text-sm max-w-[85%] leading-relaxed">
+                  <div className={`border text-[var(--color-text)] rounded-2xl rounded-br-sm px-4 py-2.5 text-sm max-w-[85%] leading-relaxed ${
+                    msg.isVoice
+                      ? 'bg-red-50 border-red-200'
+                      : 'bg-[var(--color-accent-dim)] border-[var(--color-border-accent)]'
+                  }`}>
+                    {msg.isVoice && (
+                      <Mic size={10} className="inline mr-1.5 text-red-400 -mt-0.5" />
+                    )}
                     {msg.content}
                   </div>
                 </div>
@@ -158,9 +287,17 @@ export function ChatPanel({ title, initialMessage, context }: ChatPanelProps) {
                   )}
                   {/* Response text */}
                   <div className="text-sm text-[var(--color-text)] leading-relaxed prose prose-sm prose-neutral dark:prose-invert max-w-none [&_hr]:my-3 [&_h2]:text-base [&_h2]:font-semibold [&_h2]:mt-4 [&_h2]:mb-2 [&_h3]:text-sm [&_h3]:font-semibold [&_h3]:mt-3 [&_h3]:mb-1 [&_p]:my-1 [&_ul]:my-1 [&_a]:text-[var(--color-accent)] [&_a]:underline [&_img]:rounded-lg [&_img]:max-w-full [&_img]:my-2">
-                    <ReactMarkdown remarkPlugins={[remarkGfm]}>{msg.content}</ReactMarkdown>
+                    {msg.isVoice && !msg.isStreaming && (
+                      <Volume2 size={11} className="inline mr-1.5 text-green-500 -mt-0.5" />
+                    )}
+                    <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                      {msg.content || (msg.isStreaming ? '...' : '')}
+                    </ReactMarkdown>
+                    {msg.isStreaming && (
+                      <span className="inline-block w-1.5 h-4 bg-[var(--color-accent)] animate-pulse ml-0.5 -mb-0.5 rounded-sm" />
+                    )}
                   </div>
-                  {i > 0 && (
+                  {i > 0 && !msg.isStreaming && (
                     <div className="flex items-center gap-1 pt-1">
                       <Button variant="ghost" size="icon-sm" className="h-7 w-7 text-[var(--color-text-subtle)]">
                         <Copy size={12} />
@@ -188,22 +325,63 @@ export function ChatPanel({ title, initialMessage, context }: ChatPanelProps) {
         </div>
       </ScrollArea>
 
-      {/* Input — pill-shaped like NotebookLM */}
+      {/* Voice state indicator */}
+      <VoiceStateIndicator state={voiceState} transcript={interimTranscript} />
+
+      {/* Input — pill-shaped */}
       <div className="p-3 border-t border-[var(--color-border)] shrink-0">
-        <div className="flex items-center gap-2 border border-[var(--color-border)] rounded-full px-4 py-1.5 focus-within:border-[var(--color-accent)]">
+        <div className={`flex items-center gap-2 border rounded-full px-4 py-1.5 transition-colors ${
+          voiceState === 'listening'
+            ? 'border-red-300 bg-red-50'
+            : 'border-[var(--color-border)] focus-within:border-[var(--color-accent)]'
+        }`}>
+          {/* Voice button */}
+          {voiceSupported && (
+            <button
+              onClick={toggleVoice}
+              disabled={loading}
+              className={`shrink-0 p-1 rounded-full transition-all ${
+                voiceState === 'listening'
+                  ? 'text-red-500 bg-red-100 hover:bg-red-200'
+                  : voiceState === 'speaking'
+                    ? 'text-green-500 bg-green-100 hover:bg-green-200'
+                    : voiceState === 'processing'
+                      ? 'text-[var(--color-accent)] opacity-50 cursor-wait'
+                      : 'text-[var(--color-text-subtle)] hover:text-[var(--color-text)] hover:bg-black/5'
+              }`}
+              title={
+                voiceState === 'idle' ? 'Start voice input' :
+                voiceState === 'listening' ? 'Stop listening' :
+                voiceState === 'speaking' ? 'Stop playback' :
+                'Processing...'
+              }
+            >
+              {voiceState === 'listening' ? (
+                <MicOff size={16} />
+              ) : voiceState === 'speaking' ? (
+                <Volume2 size={16} />
+              ) : voiceState === 'processing' ? (
+                <Loader2 size={16} className="animate-spin" />
+              ) : (
+                <Mic size={16} />
+              )}
+            </button>
+          )}
+
           <input
             type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && sendMessage()}
-            placeholder="Start typing..."
+            placeholder={voiceState === 'listening' ? 'Listening...' : 'Start typing or click the mic...'}
             className="flex-1 bg-transparent outline-none text-sm text-[var(--color-text)] placeholder:text-[var(--color-text-ghost)]"
+            disabled={isVoiceBusy}
           />
           <Button
             variant="ghost"
             size="icon-sm"
             onClick={sendMessage}
-            disabled={loading || !input.trim()}
+            disabled={loading || !input.trim() || isVoiceBusy}
             className="rounded-full shrink-0"
           >
             <Send size={14} />

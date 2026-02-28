@@ -1,0 +1,118 @@
+{
+  "name": "AI Agents Weekly",
+  "description": "What happened in AI agents this week — frameworks, papers, launches, drama",
+
+  "interests": {
+    "field": "AI agents & agentic systems",
+    "topics": [
+      "AI agent frameworks",
+      "tool use and function calling",
+      "MCP (Model Context Protocol)",
+      "multi-agent orchestration",
+      "agent memory and planning",
+      "code generation agents",
+      "autonomous coding (Devin, Cursor, Claude Code)"
+    ],
+    "level": "advanced",
+    "depth": "technical"
+  },
+
+  "discovery": {
+    "timeframe_hours": 168,
+    "max_topics": 10,
+    "relevance_threshold": 0.3,
+    "n_clusters": 12
+  },
+
+  "sources": {
+    "reddit": {
+      "enabled": true,
+      "subreddits": ["MachineLearning", "LocalLLaMA", "ClaudeAI", "ChatGPTPro"],
+      "min_score": 30,
+      "hours_back": 168
+    },
+    "hackernews": {
+      "enabled": true,
+      "filter": "AI agents OR MCP OR Claude OR agentic OR multi-agent OR tool use OR function calling",
+      "min_points": 20
+    },
+    "arxiv": {
+      "enabled": true,
+      "categories": ["cs.AI", "cs.CL", "cs.SE"],
+      "max_results": 30,
+      "hours_back": 168
+    },
+    "rss": {
+      "enabled": true,
+      "feeds": {
+        "openai": "https://openai.com/blog/rss/",
+        "anthropic": "https://www.anthropic.com/feed.xml",
+        "google_ai": "https://blog.google/technology/ai/rss/",
+        "deepmind": "https://deepmind.google/blog/rss.xml"
+      },
+      "hours_back": 168
+    },
+    "substack": {
+      "enabled": true,
+      "publications": {
+        "import_ai": "https://importai.substack.com",
+        "ahead_of_ai": "https://magazine.sebastianraschka.com",
+        "interconnects": "https://www.interconnects.ai",
+        "latent_space": "https://www.latent.space"
+      },
+      "hours_back": 168
+    },
+    "blogs": {
+      "enabled": true,
+      "feeds": {
+        "simon_willison": "https://simonwillison.net/atom/everything/",
+        "huggingface": "https://huggingface.co/blog/feed.xml",
+        "langchain": "https://blog.langchain.dev/rss/",
+        "llamaindex": "https://www.llamaindex.ai/blog/rss.xml"
+      },
+      "hours_back": 168
+    },
+    "exa": {
+      "enabled": true,
+      "query": "AI agents frameworks tool use MCP agentic coding",
+      "category": "news"
+    },
+    "newsletters": {
+      "enabled": true,
+      "newsletters": [
+        { "name": "TLDR AI", "type": "tldr", "section": "ai" },
+        { "name": "The Batch", "type": "deeplearning_batch" }
+      ],
+      "hours_back": 168
+    },
+    "pubmed": {
+      "enabled": false,
+      "query": "large language model agents",
+      "max_results": 10
+    },
+    "twitter": {
+      "enabled": false,
+      "keywords": ["AI agents", "MCP", "Claude Code", "agentic"],
+      "lang": "en"
+    },
+    "twitter_accounts": {
+      "enabled": false,
+      "accounts": ["AnthropicAI", "OpenAI", "LangChainAI", "llaboratory"]
+    },
+    "podcasts": {
+      "enabled": false,
+      "shows": [
+        { "name": "Latent Space", "feed_url": null },
+        { "name": "Gradient Dissent", "feed_url": null }
+      ],
+      "hours_back": 168
+    },
+    "youtube": {
+      "enabled": false,
+      "channels": {
+        "Two Minute Papers": "UCbfYPyITQ-7l4upoX8nvctg",
+        "Yannic Kilcher": "UCZHmQk67mSJgfCCTn7xBfew"
+      }
+    }
+  }
+}

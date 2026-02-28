@@ -1,0 +1,32 @@
+category: breaking
+date: '2026-03-01'
+generated:
+  audio: false
+  diagrams: []
+  jingle: false
+  synthesis: true
+  video: false
+relevance_reason: Government policy regarding Anthropic as supply-chain risk, indirectly
+  related to AI/ML industry but not covering technical aspects.
+relevance_score: 0.35
+slug: i-am-directing-the-department-of-war-to-designate-anthropic
+sources:
+- points: 1302
+  title: I am directing the Department of War to designate Anthropic a supply-chain
+    risk
+  type: hackernews
+  url: https://twitter.com/secwar/status/2027507717469049070
+- points: 296
+  title: President Trump bans Anthropic from use in government systems
+  type: hackernews
+  url: https://www.npr.org/2026/02/27/nx-s1-5729118/trump-anthropic-pentagon-openai-ai-weapons-ban
+status: new
+tags:
+- anthropic
+- department
+- designate
+- directing
+- risk
+- supply-chain
+title: I am directing the Department of War to designate Anthropic a supply-chain
+  risk
