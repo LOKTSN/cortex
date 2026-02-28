@@ -1,0 +1,13 @@
+field: "AI / ML"
+sources:
+  - { id: "arxiv_ai", type: "arxiv", categories: ["cs.AI", "cs.LG", "cs.CL"], enabled: true }
+  - { id: "hn", type: "hackernews", filter: "AI", enabled: true }
+  - { id: "gh_ml", type: "github", filter: "trending/ML", enabled: true }
+  - { id: "reddit_ml", type: "reddit", subreddit: "MachineLearning", enabled: false }
+level: "advanced"
+depth: "technical"
+interval: "daily_6am"
+breaking_alerts: true
+focus_areas: ["training methods", "model deployment", "inference optimization"]
+goal: "stay_current"
+time_budget_min: 15

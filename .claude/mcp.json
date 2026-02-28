@@ -1,0 +1,27 @@
+{
+  "mcpServers": {
+    "claude-spawner": {
+      "type": "stdio",
+      "command": "python3",
+      "args": [
+        "/Users/philipp/coden/agent_system_design/library/workspace/mcp/run_spawner.py",
+        "--vault-root",
+        "/Users/philipp/coden/agent_system_design"
+      ]
+    },
+    "agent-tools": {
+      "type": "stdio",
+      "command": "python3",
+      "args": [
+        "/Users/philipp/coden/agent_system_design/library/workspace/mcp/run_agent_tools.py"
+      ]
+    },
+    "arxiv-search": {
+      "type": "stdio",
+      "command": "python3",
+      "args": [
+        "/Users/philipp/coden/arxiv_search/arxiv_mcp_server.py"
+      ]
+    }
+  }
+}
