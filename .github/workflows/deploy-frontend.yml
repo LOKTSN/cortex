@@ -1,0 +1,75 @@
+name: Deploy Frontend
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - frontend/**
+      - .github/workflows/deploy-frontend.yml
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-southeast-1
+
+      - name: Login to ECR
+        run: |
+          aws ecr get-login-password --region ap-southeast-1 | \
+            docker login --username AWS --password-stdin \
+            662829278911.dkr.ecr.ap-southeast-1.amazonaws.com
+
+      - name: Build and push image
+        run: |
+          docker build --platform linux/amd64 -t cortex-frontend ./frontend
+          docker tag cortex-frontend:latest \
+            662829278911.dkr.ecr.ap-southeast-1.amazonaws.com/cortex-frontend:latest
+          docker push \
+            662829278911.dkr.ecr.ap-southeast-1.amazonaws.com/cortex-frontend:latest
+
+      - name: Deploy to ECS
+        run: |
+          aws ecs update-service \
+            --cluster cortex-cluster \
+            --service cortex-frontend \
+            --force-new-deployment
+          aws ecs wait services-stable \
+            --cluster cortex-cluster \
+            --services cortex-frontend
+
+      - name: Get new public IP and save to SSM
+        run: |
+          TASK_ARN=$(aws ecs list-tasks \
+            --cluster cortex-cluster \
+            --service-name cortex-frontend \
+            --query "taskArns[0]" --output text)
+
+          ENI_ID=$(aws ecs describe-tasks \
+            --cluster cortex-cluster \
+            --tasks $TASK_ARN \
+            --query "tasks[0].attachments[0].details[?name=='networkInterfaceId'].value" \
+            --output text)
+
+          PUBLIC_IP=$(aws ec2 describe-network-interfaces \
+            --network-interface-ids $ENI_ID \
+            --query "NetworkInterfaces[0].Association.PublicIp" \
+            --output text)
+
+          # Save to SSM so you can always look it up
+          aws ssm put-parameter \
+            --name "/cortex/frontend-url" \
+            --value "http://$PUBLIC_IP" \
+            --type String \
+            --overwrite
+
+          echo "✅ Frontend deployed at: http://$PUBLIC_IP"
+          echo "### 🚀 Deployed!" >> $GITHUB_STEP_SUMMARY
+          echo "**URL:** http://$PUBLIC_IP" >> $GITHUB_STEP_SUMMARY
