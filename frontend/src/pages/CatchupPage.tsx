@@ -3,7 +3,9 @@ import { useParams, Link } from "react-router-dom"
 import { ArrowLeft } from "lucide-react"
 import ReactMarkdown from "react-markdown"
 import remarkGfm from "remark-gfm"
+import { CopilotKit } from "@copilotkit/react-core"
 import { CopilotChat } from "@copilotkit/react-ui"
+import "@copilotkit/react-ui/styles.css"
 import { useTopicsStore } from "@/stores/topics-store"
 import { Badge } from "@/components/ui/badge"
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
@@ -104,7 +106,11 @@ export function CatchupPage() {
 
   // No slug — show studio landing
   if (!slug) {
-    return <StudioHome />
+    return (
+      <CopilotKit runtimeUrl="/copilotkit">
+        <StudioHome />
+      </CopilotKit>
+    )
   }
 
   if (!selectedTopic) {
@@ -120,6 +126,7 @@ export function CatchupPage() {
   }
 
   return (
+    <CopilotKit runtimeUrl="/copilotkit">
     <div className="mx-auto max-w-5xl px-6 py-8">
       <Link to="/catchup" className="mb-4 inline-flex items-center gap-1 text-sm text-text-muted hover:text-text">
         <ArrowLeft className="h-4 w-4" />
@@ -202,5 +209,6 @@ export function CatchupPage() {
         </div>
       </div>
     </div>
+    </CopilotKit>
   )
 }
