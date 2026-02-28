@@ -145,9 +145,6 @@ export function CatchupPage() {
               <TabsTrigger value="summary">Summary</TabsTrigger>
               <TabsTrigger value="audio">Audio</TabsTrigger>
               <TabsTrigger value="diagrams">Diagrams</TabsTrigger>
-              <TabsTrigger value="video">Video</TabsTrigger>
-              <TabsTrigger value="jingle">Jingle</TabsTrigger>
-              <TabsTrigger value="notes">Notes</TabsTrigger>
             </TabsList>
 
             <TabsContent value="summary">
@@ -176,24 +173,6 @@ export function CatchupPage() {
             <TabsContent value="diagrams">
               <div className="flex items-center justify-center py-16 text-sm text-text-muted">
                 Architecture diagrams will appear here
-              </div>
-            </TabsContent>
-
-            <TabsContent value="video">
-              <div className="flex items-center justify-center py-16 text-sm text-text-muted">
-                Video summary will appear here
-              </div>
-            </TabsContent>
-
-            <TabsContent value="jingle">
-              <div className="flex items-center justify-center py-16 text-sm text-text-muted">
-                AI-generated jingle for this topic
-              </div>
-            </TabsContent>
-
-            <TabsContent value="notes">
-              <div className="flex items-center justify-center py-16 text-sm text-text-muted">
-                Your notes will appear here
               </div>
             </TabsContent>
           </Tabs>
