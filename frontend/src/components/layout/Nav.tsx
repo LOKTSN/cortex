@@ -7,7 +7,7 @@ import edgeIcon from "@/assets/your_edge.svg"
 
 const navItems = [
   { to: "/", label: "Essential", icon: essentialIcon },
-  { to: "/catchup", label: "Catch-up", icon: catchupIcon },
+  { to: "/catchup", label: "Studio", icon: catchupIcon },
   { to: "/edge", label: "Your Edge", icon: edgeIcon },
 ]
 
@@ -18,7 +18,7 @@ export function Nav() {
   return (
     <nav className="sticky top-0 z-40 flex items-center justify-between border-b bg-white px-6 py-3">
       <Link to="/" className="flex items-center gap-2">
-        <img src={logoSvg} alt="Frontexh AI" className="h-8" />
+        <img src={logoSvg} alt="Frontexh AI" className="h-4" />
       </Link>
 
       <div className="flex items-center gap-1">
