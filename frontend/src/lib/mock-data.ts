@@ -184,26 +184,91 @@ export const mockTldr = `While you were away, 3 major developments happened in A
 
 **3. EU AI Act enforcement started** — social scoring banned, €35M fines active. Major compliance deadline in 6 months for GPAI providers.`
 
-export const mockEdgeTopics = [
+export interface EdgeTopic {
+  name: string
+  slug: string
+  status: string
+  saved: string
+  fileCount: number
+  isNew: boolean
+}
+
+export interface EdgeDay {
+  day: string       // e.g. "28"
+  label: string     // e.g. "Feb 28"
+  topics: EdgeTopic[]
+}
+
+export interface EdgeMonth {
+  month: string     // e.g. "February 2026"
+  days: EdgeDay[]
+}
+
+export const mockEdgeTopics: EdgeMonth[] = [
   {
     month: "February 2026",
-    topics: [
-      { name: "Gemini 4 Launch", slug: "gemini-4-launch", status: "Read + Listened", saved: "Feb 28, 2026", fileCount: 3, isNew: true },
-      { name: "EU AI Act Changes", slug: "eu-ai-act-enforcement", status: "Read", saved: "Feb 28, 2026", fileCount: 3, isNew: true },
-      { name: "Sparse Attention", slug: "sparse-attention-10m", status: "Read", saved: "Feb 28, 2026", fileCount: 3, isNew: true },
-      { name: "GPT-5 Multimodal", slug: "gpt-5-multimodal", status: "Read", saved: "Feb 27, 2026", fileCount: 3, isNew: true },
-      { name: "Constitutional AI 2.0", slug: "constitutional-ai-2", status: "New", saved: "Feb 26, 2026", fileCount: 3, isNew: true },
-      { name: "Llama 4", slug: "llama-4-2m-context", status: "New", saved: "Feb 25, 2026", fileCount: 3, isNew: true },
-      { name: "Fridman × Hassabis", slug: "fridman-hassabis-agi", status: "New", saved: "Feb 24, 2026", fileCount: 3, isNew: false },
-      { name: "GRPO Paper", slug: "grpo-rlhf-alternative", status: "New", saved: "Feb 23, 2026", fileCount: 3, isNew: false },
+    days: [
+      {
+        day: "28", label: "Feb 28",
+        topics: [
+          { name: "Gemini 4 Launch", slug: "gemini-4-launch", status: "Read + Listened", saved: "Feb 28, 2026", fileCount: 3, isNew: true },
+          { name: "EU AI Act Changes", slug: "eu-ai-act-enforcement", status: "Read", saved: "Feb 28, 2026", fileCount: 3, isNew: true },
+          { name: "Sparse Attention", slug: "sparse-attention-10m", status: "Read", saved: "Feb 28, 2026", fileCount: 3, isNew: true },
+        ],
+      },
+      {
+        day: "27", label: "Feb 27",
+        topics: [
+          { name: "GPT-5 Multimodal", slug: "gpt-5-multimodal", status: "Read", saved: "Feb 27, 2026", fileCount: 3, isNew: true },
+        ],
+      },
+      {
+        day: "26", label: "Feb 26",
+        topics: [
+          { name: "Constitutional AI 2.0", slug: "constitutional-ai-2", status: "New", saved: "Feb 26, 2026", fileCount: 3, isNew: true },
+        ],
+      },
+      {
+        day: "25", label: "Feb 25",
+        topics: [
+          { name: "Llama 4", slug: "llama-4-2m-context", status: "New", saved: "Feb 25, 2026", fileCount: 3, isNew: true },
+        ],
+      },
+      {
+        day: "24", label: "Feb 24",
+        topics: [
+          { name: "Fridman × Hassabis", slug: "fridman-hassabis-agi", status: "New", saved: "Feb 24, 2026", fileCount: 3, isNew: false },
+        ],
+      },
+      {
+        day: "23", label: "Feb 23",
+        topics: [
+          { name: "GRPO Paper", slug: "grpo-rlhf-alternative", status: "New", saved: "Feb 23, 2026", fileCount: 3, isNew: false },
+        ],
+      },
     ],
   },
   {
     month: "January 2026",
-    topics: [
-      { name: "State of RLHF", slug: "state-of-rlhf-dpo", status: "Read + Listened", saved: "Jan 15, 2026", fileCount: 3, isNew: false },
-      { name: "Ring Attention", slug: "ring-attention", status: "Read", saved: "Jan 10, 2026", fileCount: 3, isNew: false },
-      { name: "vLLM 0.8", slug: "vllm-08-release", status: "Read", saved: "Jan 8, 2026", fileCount: 3, isNew: false },
+    days: [
+      {
+        day: "15", label: "Jan 15",
+        topics: [
+          { name: "State of RLHF", slug: "state-of-rlhf-dpo", status: "Read + Listened", saved: "Jan 15, 2026", fileCount: 3, isNew: false },
+        ],
+      },
+      {
+        day: "10", label: "Jan 10",
+        topics: [
+          { name: "Ring Attention", slug: "ring-attention", status: "Read", saved: "Jan 10, 2026", fileCount: 3, isNew: false },
+        ],
+      },
+      {
+        day: "08", label: "Jan 8",
+        topics: [
+          { name: "vLLM 0.8", slug: "vllm-08-release", status: "Read", saved: "Jan 8, 2026", fileCount: 3, isNew: false },
+        ],
+      },
     ],
   },
 ]

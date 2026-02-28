@@ -22,7 +22,7 @@ function getIcon(filename: string) {
 }
 
 export function TopicPreview({ slug, name }: TopicPreviewProps) {
-  const allEdgeTopics = mockEdgeTopics.flatMap((g) => g.topics)
+  const allEdgeTopics = mockEdgeTopics.flatMap((g) => g.days.flatMap((d) => d.topics))
   const edgeTopic = allEdgeTopics.find((t) => t.slug === slug && t.name === name)
   const { topics } = useTopicsStore()
   const topic = topics.find((t) => t.slug === slug)
