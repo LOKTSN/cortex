@@ -4,7 +4,7 @@ import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import { Button } from '@/components/ui/button'
 import { ScrollArea } from '@/components/ui/scroll-area'
-import { useVoiceChat, isVoiceSupported, type VoiceState } from '@/hooks/useVoiceChat'
+import { useVoiceChat, type VoiceState } from '@/hooks/useVoiceChat'
 
 interface ToolCall {
   name: string
