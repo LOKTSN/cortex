@@ -3,10 +3,10 @@ import { useParams, Link } from "react-router-dom"
 import { ArrowLeft } from "lucide-react"
 import ReactMarkdown from "react-markdown"
 import remarkGfm from "remark-gfm"
+import { CopilotChat } from "@copilotkit/react-ui"
 import { useTopicsStore } from "@/stores/topics-store"
 import { Badge } from "@/components/ui/badge"
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
-import { ChatPanel } from "@/components/ChatPanel"
 import { Separator } from "@/components/ui/separator"
 
 const categoryVariant: Record<string, "breaking" | "paper" | "trending" | "repo" | "podcast"> = {
@@ -27,6 +27,11 @@ const categoryConfig: Record<string, { emoji: string; variant: "breaking" | "pap
 
 function StudioHome() {
   const topics = useTopicsStore((s) => s.topics)
+  const fetchTopics = useTopicsStore((s) => s.fetchTopics)
+
+  useEffect(() => {
+    fetchTopics()
+  }, [fetchTopics])
 
   return (
     <div className="mx-auto max-w-5xl px-6 py-8">
@@ -73,10 +78,9 @@ function StudioHome() {
               <p className="text-sm font-semibold">Ask Cortex</p>
             </div>
             <div className="h-[500px]">
-              <ChatPanel
-                title="Cortex"
-                initialMessage="Hi! I'm your AI research companion. Ask me about any of today's topics, or anything else you're curious about."
-                context={topics.map((t) => `${t.category}: ${t.title} — ${t.description}`).join("\n\n")}
+              <CopilotChat
+                instructions={`You are Cortex, an AI research companion. Here are today's topics:\n\n${topics.map((t) => `${t.category}: ${t.title} — ${t.description}`).join("\n\n")}`}
+                labels={{ title: "Cortex", initial: "Hi! I'm your AI research companion. Ask me about any of today's topics, or anything else you're curious about." }}
               />
             </div>
           </div>
@@ -88,7 +92,11 @@ function StudioHome() {
 
 export function CatchupPage() {
   const { slug } = useParams<{ slug: string }>()
-  const { selectedTopic, selectTopic } = useTopicsStore()
+  const { selectedTopic, selectTopic, fetchTopics } = useTopicsStore()
+
+  useEffect(() => {
+    fetchTopics()
+  }, [fetchTopics])
 
   useEffect(() => {
     if (slug) selectTopic(slug)
@@ -185,10 +193,9 @@ export function CatchupPage() {
               <p className="text-sm font-semibold">Ask about this topic</p>
             </div>
             <div className="h-[400px]">
-              <ChatPanel
-                title="Cortex"
-                initialMessage={`I can help you understand "${selectedTopic.title}". Ask me anything about this topic!`}
-                context={selectedTopic.synthesis}
+              <CopilotChat
+                instructions={`You are Cortex, an AI research companion. The user is reading about "${selectedTopic.title}". Here is the full synthesis:\n\n${selectedTopic.synthesis}`}
+                labels={{ title: "Cortex", initial: `I can help you understand "${selectedTopic.title}". Ask me anything about this topic!` }}
               />
             </div>
           </div>
