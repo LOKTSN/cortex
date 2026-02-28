@@ -1,13 +1,19 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Search, MessageCircle } from "lucide-react"
 import { FileTree } from "@/components/edge/FileTree"
 import { TopicPreview } from "@/components/edge/TopicPreview"
 import { GraphView } from "@/components/edge/GraphView"
 import { Button } from "@/components/ui/button"
+import { useTopicsStore } from "@/stores/topics"
 
 export function EdgePage() {
   const [view, setView] = useState<"file" | "graph">("file")
   const [selected, setSelected] = useState<{ slug: string; name: string } | null>(null)
+  const fetchTopics = useTopicsStore((s) => s.fetchTopics)
+
+  useEffect(() => {
+    fetchTopics()
+  }, [fetchTopics])
 
   return (
     <div className="flex h-[calc(100vh-57px-73px)] flex-col">

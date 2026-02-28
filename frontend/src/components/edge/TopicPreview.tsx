@@ -2,7 +2,7 @@ import { Link } from "react-router-dom"
 import { CheckCircle, FileText, Music, Video, Image, StickyNote } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { mockEdgeTopics } from "@/lib/mock-data"
-import { mockTopics } from "@/lib/mock-data"
+import { useTopicsStore } from "@/stores/topics"
 
 interface TopicPreviewProps {
   slug: string
@@ -22,11 +22,15 @@ function getIcon(filename: string) {
 }
 
 export function TopicPreview({ slug, name }: TopicPreviewProps) {
-  const allTopics = mockEdgeTopics.flatMap((g) => g.topics)
-  const edgeTopic = allTopics.find((t) => t.slug === slug && t.name === name)
-  const topic = mockTopics.find((t) => t.slug === slug)
+  const allEdgeTopics = mockEdgeTopics.flatMap((g) => g.topics)
+  const edgeTopic = allEdgeTopics.find((t) => t.slug === slug && t.name === name)
+  const { topics } = useTopicsStore()
+  const topic = topics.find((t) => t.slug === slug)
 
-  if (!edgeTopic || !topic) return null
+  if (!edgeTopic) return null
+
+  // Use files from the API-backed topic store, fall back to edge topic fileCount
+  const files = topic?.files ?? []
 
   return (
     <div className="p-6">
@@ -46,12 +50,12 @@ export function TopicPreview({ slug, name }: TopicPreviewProps) {
 
         <div className="flex items-center gap-2">
           <span className="text-text-muted">Files:</span>
-          <span>{edgeTopic.fileCount}</span>
+          <span>{files.length || edgeTopic.fileCount}</span>
         </div>
       </div>
 
       <div className="mt-6 space-y-2">
-        {topic.files.map((file) => (
+        {files.map((file) => (
           <div
             key={file}
             className="flex items-center gap-2 rounded-lg border px-3 py-2 text-sm"

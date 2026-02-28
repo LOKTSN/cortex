@@ -1,10 +1,22 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { Search, FolderOpen, Calendar, Brain, BookOpen } from 'lucide-react'
+import { Search, FolderOpen, Calendar, Brain, BookOpen, FileText, Music, Video, Image, StickyNote } from 'lucide-react'
 import { useTopicsStore, type Topic } from '@/stores/topics'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { ScrollArea } from '@/components/ui/scroll-area'
+
+const fileIcons: Record<string, React.ReactNode> = {
+  '.md': <FileText size={14} className="text-[var(--color-text-muted)]" />,
+  '.png': <Image size={14} className="text-[var(--color-text-muted)]" />,
+  '.mp3': <Music size={14} className="text-[var(--color-text-muted)]" />,
+  '.mp4': <Video size={14} className="text-[var(--color-text-muted)]" />,
+}
+
+function getFileIcon(filename: string) {
+  const ext = filename.substring(filename.lastIndexOf('.'))
+  return fileIcons[ext] ?? <StickyNote size={14} className="text-[var(--color-text-muted)]" />
+}
 
 type FilterCategory = 'all' | Topic['category']
 type FilterStatus = 'all' | Topic['status']
@@ -175,6 +187,25 @@ export function KBPage() {
                 <p className="text-xs text-[var(--color-text-subtle)] mb-4">
                   {selected.relevance_reason}
                 </p>
+
+                {selected.files && selected.files.length > 0 && (
+                  <div className="mb-4">
+                    <p className="text-xs font-medium text-[var(--color-text-muted)] mb-2">
+                      Files: {selected.files.length}
+                    </p>
+                    <div className="space-y-1">
+                      {selected.files.map((file) => (
+                        <div
+                          key={file}
+                          className="flex items-center gap-2 rounded-md border border-[var(--color-border)] px-3 py-1.5 text-sm text-[var(--color-text-muted)]"
+                        >
+                          {getFileIcon(file)}
+                          {file}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
 
                 <div className="flex gap-2">
                   <Button variant="default" size="sm" asChild className="gap-1.5">
