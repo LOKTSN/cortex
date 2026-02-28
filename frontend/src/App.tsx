@@ -1,22 +1,24 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
-import { AppShell } from '@/components/layout/AppShell'
-import { PulsePage } from '@/pages/PulsePage'
-import { LearningPage } from '@/pages/LearningPage'
-import { TemplatePage } from '@/pages/TemplatePage'
-import { KBPage } from '@/pages/KBPage'
+import { BrowserRouter, Routes, Route } from "react-router-dom"
+import { Shell } from "@/components/layout/Shell"
+import { EssentialPage } from "@/pages/EssentialPage"
+import { SettingsPage } from "@/pages/SettingsPage"
+import { CatchupPage } from "@/pages/CatchupPage"
+import { EdgePage } from "@/pages/EdgePage"
 
-export default function App() {
+function App() {
   return (
     <BrowserRouter>
-      <Routes>
-        <Route element={<AppShell />}>
-          <Route index element={<Navigate to="/pulse" replace />} />
-          <Route path="pulse" element={<PulsePage />} />
-          <Route path="learn/:slug" element={<LearningPage />} />
-          <Route path="template" element={<TemplatePage />} />
-          <Route path="kb" element={<KBPage />} />
-        </Route>
-      </Routes>
+      <Shell>
+        <Routes>
+          <Route path="/" element={<EssentialPage />} />
+          <Route path="/settings" element={<SettingsPage />} />
+          <Route path="/catchup/:slug" element={<CatchupPage />} />
+          <Route path="/catchup" element={<CatchupPage />} />
+          <Route path="/edge" element={<EdgePage />} />
+        </Routes>
+      </Shell>
     </BrowserRouter>
   )
 }
+
+export default App

@@ -1,27 +1,26 @@
-import { cva, type VariantProps } from 'class-variance-authority'
-import { cn } from '@/lib/utils'
+import { cva, type VariantProps } from "class-variance-authority"
+import { cn } from "@/lib/utils"
 
 const badgeVariants = cva(
-  'inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium leading-none',
+  "inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-semibold uppercase tracking-wide",
   {
     variants: {
       variant: {
-        default:   'bg-[var(--bg-raised)] text-[var(--color-text-muted)]',
-        breaking:  'bg-[rgba(224,90,75,0.12)] text-[var(--color-cat-breaking)]',
-        paper:     'bg-[var(--color-accent-dim)] text-[var(--color-cat-paper)]',
-        trending:  'bg-[rgba(212,146,42,0.12)] text-[var(--color-cat-trending)]',
-        repo:      'bg-[rgba(59,184,122,0.12)] text-[var(--color-cat-repo)]',
-        podcast:   'bg-[rgba(155,110,208,0.12)] text-[var(--color-cat-podcast)]',
-        new:       'bg-[var(--color-accent-dim)] text-[var(--color-status-new)]',
-        read:      'bg-[rgba(59,184,122,0.12)] text-[var(--color-status-read)]',
-        archived:  'bg-[var(--bg-raised)] text-[var(--color-status-archived)]',
+        default: "bg-bg-muted text-text-muted",
+        breaking: "bg-red-50 text-cat-breaking",
+        paper: "bg-gray-50 text-cat-paper",
+        trending: "bg-amber-50 text-cat-trending",
+        repo: "bg-purple-50 text-purple-600",
+        podcast: "bg-blue-50 text-blue-600",
       },
     },
-    defaultVariants: { variant: 'default' },
+    defaultVariants: {
+      variant: "default",
+    },
   }
 )
 
-export interface BadgeProps
+interface BadgeProps
   extends React.HTMLAttributes<HTMLSpanElement>,
     VariantProps<typeof badgeVariants> {}
 
