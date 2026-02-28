@@ -12,6 +12,7 @@ export default defineConfig({
   },
   server: {
     proxy: {
+      '/copilotkit': 'http://localhost:4111',
       '/api': 'http://localhost:8000',
     },
   },

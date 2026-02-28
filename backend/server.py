@@ -108,3 +108,12 @@ async def get_synthesis(slug: str):
 async def get_profile():
     # TODO: read data/profiles/default/profile.yaml
     return {}
+
+
+# Mount the CopilotKit AG-UI endpoint at /api/copilotkit
+try:
+    from agent.copilotkit_setup import setup_copilotkit
+    setup_copilotkit(app, workspace_root=Path(__file__).resolve().parent.parent)
+except Exception as e:
+    import logging
+    logging.getLogger(__name__).warning(f"CopilotKit endpoint not mounted: {e}")
