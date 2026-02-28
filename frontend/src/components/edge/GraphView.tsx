@@ -1,183 +1,175 @@
-import { useEffect, useRef, useState, useCallback } from "react"
-import { mockTopics, type Topic } from "@/lib/mock-data"
+import { useMemo, useCallback } from "react"
+import {
+  ReactFlow,
+  Background,
+  Controls,
+  type Node,
+  type Edge,
+  type NodeTypes,
+  Position,
+  Handle,
+  type NodeProps,
+} from "@xyflow/react"
+import "@xyflow/react/dist/style.css"
+import { mockTopics } from "@/lib/mock-data"
 
-/* ── Category colors ── */
-const CAT_COLORS: Record<string, string> = {
-  BREAKING: "#EF4444",
-  "NEW PAPER": "#6366F1",
-  TRENDING: "#F59E0B",
-  REPO: "#22C55E",
-  PODCAST: "#8B5CF6",
+/* ── Category styles ── */
+const CAT_STYLES: Record<string, { color: string; bg: string; border: string }> = {
+  BREAKING:   { color: "#DC2626", bg: "#FEF2F2", border: "#FECACA" },
+  "NEW PAPER": { color: "#4F46E5", bg: "#EEF2FF", border: "#C7D2FE" },
+  TRENDING:   { color: "#D97706", bg: "#FFFBEB", border: "#FDE68A" },
+  REPO:       { color: "#16A34A", bg: "#F0FDF4", border: "#BBF7D0" },
+  PODCAST:    { color: "#7C3AED", bg: "#FAF5FF", border: "#DDD6FE" },
 }
 
-const CAT_BG: Record<string, string> = {
-  BREAKING: "#FEF2F2",
-  "NEW PAPER": "#EEF2FF",
-  TRENDING: "#FFFBEB",
-  REPO: "#F0FDF4",
-  PODCAST: "#FAF5FF",
+/* ── Custom topic node ── */
+function TopicNode({ data }: NodeProps) {
+  const style = CAT_STYLES[data.category as string] || CAT_STYLES.TRENDING
+  return (
+    <div
+      className="rounded-xl border-2 px-4 py-3 shadow-sm transition-shadow hover:shadow-md"
+      style={{
+        backgroundColor: style.bg,
+        borderColor: style.border,
+        minWidth: 180,
+        maxWidth: 240,
+      }}
+    >
+      <Handle type="source" position={Position.Bottom} className="!bg-transparent !border-0" />
+      <Handle type="target" position={Position.Top} className="!bg-transparent !border-0" />
+      <div
+        className="text-[10px] font-bold uppercase tracking-wider mb-1"
+        style={{ color: style.color }}
+      >
+        {data.category as string}
+      </div>
+      <div className="text-xs font-semibold text-[#1A1A1A] leading-snug mb-1.5">
+        {data.label as string}
+      </div>
+      <div className="flex flex-wrap gap-1">
+        {(data.tags as string[]).map((tag: string) => (
+          <span
+            key={tag}
+            className="text-[9px] font-medium rounded-full px-1.5 py-0.5"
+            style={{ backgroundColor: style.border, color: style.color }}
+          >
+            {tag}
+          </span>
+        ))}
+      </div>
+      {typeof data.sources === "string" && (
+        <div className="text-[10px] text-[#9A9A9A] mt-1.5">{data.sources}</div>
+      )}
+    </div>
+  )
 }
 
-/* ── Types ── */
-interface Node {
-  id: string
-  label: string
-  category: string
-  x: number
-  y: number
-  vx: number
-  vy: number
-  radius: number
-  tags: string[]
-  relevance: number
-  type: "topic"
+/* ── Custom tag node (center hub) ── */
+function TagNode({ data }: NodeProps) {
+  return (
+    <div
+      className="rounded-full border border-[#E5E5E5] bg-white px-3 py-1.5 shadow-sm text-center"
+      style={{ minWidth: 70 }}
+    >
+      <Handle type="source" position={Position.Bottom} className="!bg-transparent !border-0" />
+      <Handle type="target" position={Position.Top} className="!bg-transparent !border-0" />
+      <div className="text-[10px] font-medium text-[#6B7280]">#{data.label as string}</div>
+    </div>
+  )
 }
 
-interface TagNode {
-  id: string
-  label: string
-  x: number
-  y: number
-  vx: number
-  vy: number
-  radius: number
-  type: "tag"
-  count: number
+/* ── Center hub node ── */
+function HubNode({ data }: NodeProps) {
+  return (
+    <div className="rounded-2xl border-2 border-[#1A1A1A] bg-[#1A1A1A] px-5 py-2.5 shadow-lg">
+      <Handle type="source" position={Position.Bottom} className="!bg-transparent !border-0" />
+      <Handle type="target" position={Position.Top} className="!bg-transparent !border-0" />
+      <div className="text-xs font-bold text-white tracking-wide">{data.label as string}</div>
+    </div>
+  )
 }
 
-type AnyNode = Node | TagNode
-
-interface Edge {
-  source: string
-  target: string
+const nodeTypes: NodeTypes = {
+  topic: TopicNode,
+  tag: TagNode,
+  hub: HubNode,
 }
 
-/* ── Build graph from mock data ── */
-function buildGraph(topics: Topic[]) {
-  const nodes: AnyNode[] = []
+/* ── Build graph data ── */
+function buildGraphData(): { nodes: Node[]; edges: Edge[] } {
+  const nodes: Node[] = []
   const edges: Edge[] = []
-  const tagCounts: Record<string, number> = {}
 
-  // Count tags
-  for (const t of topics) {
-    for (const tag of t.tags) {
-      tagCounts[tag] = (tagCounts[tag] || 0) + 1
-    }
+  // Center hub
+  nodes.push({
+    id: "hub",
+    type: "hub",
+    position: { x: 400, y: 20 },
+    data: { label: "AI / ML" },
+    draggable: true,
+  })
+
+  // Collect unique tags
+  const tagSet = new Set<string>()
+  for (const t of mockTopics) {
+    for (const tag of t.tags) tagSet.add(tag)
   }
+  const tags = Array.from(tagSet)
 
-  // Create tag nodes
-  const tagIds = Object.keys(tagCounts)
-  const cx = 400
-  const cy = 250
-
-  tagIds.forEach((tag, i) => {
-    const angle = (2 * Math.PI * i) / tagIds.length - Math.PI / 2
-    const r = 100
+  // Layout: hub at top, tags in middle row, topics at bottom
+  // Tags row
+  const tagSpacing = 140
+  const tagStartX = 400 - ((tags.length - 1) * tagSpacing) / 2
+  tags.forEach((tag, i) => {
     nodes.push({
       id: `tag:${tag}`,
-      label: tag,
-      x: cx + r * Math.cos(angle) + (Math.random() - 0.5) * 30,
-      y: cy + r * Math.sin(angle) + (Math.random() - 0.5) * 30,
-      vx: 0,
-      vy: 0,
-      radius: 18 + tagCounts[tag] * 4,
       type: "tag",
-      count: tagCounts[tag],
+      position: { x: tagStartX + i * tagSpacing, y: 140 },
+      data: { label: tag },
+      draggable: true,
+    })
+    // Edge from hub to each tag
+    edges.push({
+      id: `hub-tag:${tag}`,
+      source: "hub",
+      target: `tag:${tag}`,
+      style: { stroke: "#D4D4D4", strokeWidth: 1 },
+      type: "smoothstep",
     })
   })
 
-  // Create topic nodes in outer ring
-  topics.forEach((topic, i) => {
-    const angle = (2 * Math.PI * i) / topics.length - Math.PI / 2
-    const r = 220
+  // Topics row — spread evenly
+  const topicSpacing = 260
+  const topicStartX = 400 - ((mockTopics.length - 1) * topicSpacing) / 2
+  mockTopics.forEach((topic, i) => {
+    const style = CAT_STYLES[topic.category] || CAT_STYLES.TRENDING
     nodes.push({
       id: topic.slug,
-      label: topic.title.length > 30 ? topic.title.slice(0, 28) + "…" : topic.title,
-      category: topic.category,
-      x: cx + r * Math.cos(angle) + (Math.random() - 0.5) * 20,
-      y: cy + r * Math.sin(angle) + (Math.random() - 0.5) * 20,
-      vx: 0,
-      vy: 0,
-      radius: 28 + topic.tags.length * 3,
-      tags: topic.tags,
-      relevance: 0.8,
       type: "topic",
+      position: { x: topicStartX + i * topicSpacing, y: 300 + (i % 2 === 0 ? 0 : 60) },
+      data: {
+        label: topic.title,
+        category: topic.category,
+        tags: topic.tags,
+        sources: topic.sources,
+      },
+      draggable: true,
     })
 
     // Edges from topic to its tags
     for (const tag of topic.tags) {
-      edges.push({ source: topic.slug, target: `tag:${tag}` })
+      edges.push({
+        id: `${topic.slug}-tag:${tag}`,
+        source: `tag:${tag}`,
+        target: topic.slug,
+        style: { stroke: style.border, strokeWidth: 1.5 },
+        type: "smoothstep",
+        animated: false,
+      })
     }
   })
 
   return { nodes, edges }
-}
-
-/* ── Simple force simulation ── */
-function simulate(nodes: AnyNode[], edges: Edge[], width: number, height: number) {
-  const cx = width / 2
-  const cy = height / 2
-  const nodeMap = new Map(nodes.map((n) => [n.id, n]))
-
-  // Gravity toward center
-  for (const n of nodes) {
-    const dx = cx - n.x
-    const dy = cy - n.y
-    const dist = Math.sqrt(dx * dx + dy * dy) || 1
-    const force = 0.003
-    n.vx += (dx / dist) * force * dist
-    n.vy += (dy / dist) * force * dist
-  }
-
-  // Repulsion between all nodes
-  for (let i = 0; i < nodes.length; i++) {
-    for (let j = i + 1; j < nodes.length; j++) {
-      const a = nodes[i]
-      const b = nodes[j]
-      const dx = b.x - a.x
-      const dy = b.y - a.y
-      const dist = Math.sqrt(dx * dx + dy * dy) || 1
-      const minDist = a.radius + b.radius + 30
-      if (dist < minDist * 2) {
-        const force = 1.5 / (dist * dist)
-        const fx = (dx / dist) * force
-        const fy = (dy / dist) * force
-        a.vx -= fx
-        a.vy -= fy
-        b.vx += fx
-        b.vy += fy
-      }
-    }
-  }
-
-  // Spring force for edges
-  for (const edge of edges) {
-    const a = nodeMap.get(edge.source)
-    const b = nodeMap.get(edge.target)
-    if (!a || !b) continue
-    const dx = b.x - a.x
-    const dy = b.y - a.y
-    const dist = Math.sqrt(dx * dx + dy * dy) || 1
-    const targetDist = 140
-    const force = (dist - targetDist) * 0.005
-    const fx = (dx / dist) * force
-    const fy = (dy / dist) * force
-    a.vx += fx
-    a.vy += fy
-    b.vx -= fx
-    b.vy -= fy
-  }
-
-  // Apply velocity with damping
-  for (const n of nodes) {
-    n.vx *= 0.85
-    n.vy *= 0.85
-    n.x += n.vx
-    n.y += n.vy
-    // Keep in bounds
-    n.x = Math.max(n.radius + 10, Math.min(width - n.radius - 10, n.x))
-    n.y = Math.max(n.radius + 10, Math.min(height - n.radius - 10, n.y))
-  }
 }
 
 /* ── Component ── */
@@ -186,68 +178,10 @@ interface GraphViewProps {
 }
 
 export function GraphView({ onSelectTopic }: GraphViewProps) {
-  const svgRef = useRef<SVGSVGElement>(null)
-  const containerRef = useRef<HTMLDivElement>(null)
-  const [dimensions, setDimensions] = useState({ width: 800, height: 500 })
-  const [hovered, setHovered] = useState<string | null>(null)
-  const nodesRef = useRef<AnyNode[]>([])
-  const edgesRef = useRef<Edge[]>([])
-  const frameRef = useRef<number>(0)
-  const [, setTick] = useState(0)
-  const tickRef = useRef(0)
+  const { nodes, edges } = useMemo(() => buildGraphData(), [])
 
-  // Measure container
-  useEffect(() => {
-    const el = containerRef.current
-    if (!el) return
-    const obs = new ResizeObserver((entries) => {
-      for (const e of entries) {
-        setDimensions({ width: e.contentRect.width, height: e.contentRect.height })
-      }
-    })
-    obs.observe(el)
-    return () => obs.disconnect()
-  }, [])
-
-  // Init graph
-  useEffect(() => {
-    const { nodes, edges } = buildGraph(mockTopics)
-    // Rescale positions to dimensions
-    for (const n of nodes) {
-      n.x = (n.x / 800) * dimensions.width
-      n.y = (n.y / 500) * dimensions.height
-    }
-    nodesRef.current = nodes
-    edgesRef.current = edges
-  }, [dimensions.width, dimensions.height])
-
-  // Animation loop
-  useEffect(() => {
-    let running = true
-    function tick() {
-      if (!running) return
-      simulate(nodesRef.current, edgesRef.current, dimensions.width, dimensions.height)
-      tickRef.current++
-      setTick(tickRef.current)
-      // Slow down after stabilizing
-      if (tickRef.current < 200) {
-        frameRef.current = requestAnimationFrame(tick)
-      } else {
-        // Run at lower rate
-        setTimeout(() => {
-          frameRef.current = requestAnimationFrame(tick)
-        }, 100)
-      }
-    }
-    frameRef.current = requestAnimationFrame(tick)
-    return () => {
-      running = false
-      cancelAnimationFrame(frameRef.current)
-    }
-  }, [dimensions.width, dimensions.height])
-
-  const handleClick = useCallback(
-    (node: AnyNode) => {
+  const onNodeClick = useCallback(
+    (_: React.MouseEvent, node: Node) => {
       if (node.type === "topic" && onSelectTopic) {
         const topic = mockTopics.find((t) => t.slug === node.id)
         if (topic) onSelectTopic(topic.slug, topic.title)
@@ -256,163 +190,28 @@ export function GraphView({ onSelectTopic }: GraphViewProps) {
     [onSelectTopic]
   )
 
-  const nodes = nodesRef.current
-  const edges = edgesRef.current
-  const nodeMap = new Map(nodes.map((n) => [n.id, n]))
-
-  // Find connected nodes for hover highlight
-  const connectedToHovered = new Set<string>()
-  if (hovered) {
-    connectedToHovered.add(hovered)
-    for (const e of edges) {
-      if (e.source === hovered) connectedToHovered.add(e.target)
-      if (e.target === hovered) connectedToHovered.add(e.source)
-    }
-  }
-
   return (
-    <div ref={containerRef} className="h-full w-full relative overflow-hidden bg-[#FAFAFA]">
-      {/* Legend */}
-      <div className="absolute top-4 left-4 flex flex-wrap gap-3 z-10">
-        {Object.entries(CAT_COLORS).map(([cat, color]) => (
-          <div key={cat} className="flex items-center gap-1.5">
-            <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: color }} />
-            <span className="text-[10px] font-medium text-[#6B6B6B] uppercase tracking-wide">{cat}</span>
-          </div>
-        ))}
-        <div className="flex items-center gap-1.5">
-          <div className="w-2.5 h-2.5 rounded-full bg-[#D4D4D4]" />
-          <span className="text-[10px] font-medium text-[#6B6B6B] uppercase tracking-wide">TAG</span>
-        </div>
-      </div>
-
-      <svg
-        ref={svgRef}
-        width={dimensions.width}
-        height={dimensions.height}
-        className="select-none"
+    <div className="h-full w-full">
+      <ReactFlow
+        nodes={nodes}
+        edges={edges}
+        nodeTypes={nodeTypes}
+        onNodeClick={onNodeClick}
+        fitView
+        fitViewOptions={{ padding: 0.3 }}
+        minZoom={0.3}
+        maxZoom={1.5}
+        defaultViewport={{ x: 0, y: 0, zoom: 0.8 }}
+        proOptions={{ hideAttribution: true }}
+        nodesDraggable
+        nodesConnectable={false}
       >
-        <defs>
-          {/* Glow filter */}
-          <filter id="glow">
-            <feGaussianBlur stdDeviation="3" result="coloredBlur" />
-            <feMerge>
-              <feMergeNode in="coloredBlur" />
-              <feMergeNode in="SourceGraphic" />
-            </feMerge>
-          </filter>
-        </defs>
-
-        {/* Edges */}
-        {edges.map((edge, i) => {
-          const s = nodeMap.get(edge.source)
-          const t = nodeMap.get(edge.target)
-          if (!s || !t) return null
-          const isHighlighted = hovered && (connectedToHovered.has(edge.source) && connectedToHovered.has(edge.target))
-          const dimmed = hovered && !isHighlighted
-          return (
-            <line
-              key={i}
-              x1={s.x}
-              y1={s.y}
-              x2={t.x}
-              y2={t.y}
-              stroke={isHighlighted ? "#1A1A1A" : "#E5E5E5"}
-              strokeWidth={isHighlighted ? 1.5 : 1}
-              opacity={dimmed ? 0.15 : isHighlighted ? 0.8 : 0.4}
-              style={{ transition: "opacity 200ms, stroke 200ms" }}
-            />
-          )
-        })}
-
-        {/* Nodes */}
-        {nodes.map((node) => {
-          const isHovered = hovered === node.id
-          const isConnected = connectedToHovered.has(node.id)
-          const dimmed = hovered && !isConnected
-          const color =
-            node.type === "tag" ? "#9CA3AF" : CAT_COLORS[node.category] || "#6B7280"
-          const bgColor =
-            node.type === "tag" ? "#F3F4F6" : CAT_BG[node.category] || "#F5F5F5"
-
-          return (
-            <g
-              key={node.id}
-              style={{
-                cursor: node.type === "topic" ? "pointer" : "default",
-                opacity: dimmed ? 0.25 : 1,
-                transition: "opacity 200ms",
-              }}
-              onMouseEnter={() => setHovered(node.id)}
-              onMouseLeave={() => setHovered(null)}
-              onClick={() => handleClick(node)}
-            >
-              {/* Node circle */}
-              <circle
-                cx={node.x}
-                cy={node.y}
-                r={isHovered ? node.radius + 3 : node.radius}
-                fill={bgColor}
-                stroke={color}
-                strokeWidth={isHovered ? 2.5 : node.type === "topic" ? 2 : 1.5}
-                filter={isHovered ? "url(#glow)" : undefined}
-                style={{ transition: "r 150ms, stroke-width 150ms" }}
-              />
-
-              {/* Label */}
-              {node.type === "tag" ? (
-                <text
-                  x={node.x}
-                  y={node.y + 1}
-                  textAnchor="middle"
-                  dominantBaseline="middle"
-                  fill="#6B7280"
-                  fontSize={10}
-                  fontFamily="Inter, system-ui"
-                  fontWeight={500}
-                >
-                  #{node.label}
-                </text>
-              ) : (
-                <>
-                  {/* Category badge */}
-                  <text
-                    x={node.x}
-                    y={node.y - 6}
-                    textAnchor="middle"
-                    dominantBaseline="middle"
-                    fill={color}
-                    fontSize={8}
-                    fontFamily="Inter, system-ui"
-                    fontWeight={700}
-                    letterSpacing="0.5"
-                  >
-                    {node.category}
-                  </text>
-                  {/* Title */}
-                  <text
-                    x={node.x}
-                    y={node.y + 7}
-                    textAnchor="middle"
-                    dominantBaseline="middle"
-                    fill="#1A1A1A"
-                    fontSize={9}
-                    fontFamily="Inter, system-ui"
-                    fontWeight={500}
-                  >
-                    {node.label.length > 20 ? node.label.slice(0, 18) + "…" : node.label}
-                  </text>
-                </>
-              )}
-            </g>
-          )
-        })}
-      </svg>
-
-      {/* Hint */}
-      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 text-[11px] text-[#9A9A9A] select-none">
-        Click a topic node to preview &middot; Hover to highlight connections
-      </div>
+        <Background color="#E5E5E5" gap={20} size={1} />
+        <Controls
+          showInteractive={false}
+          className="!border-[#E5E5E5] !shadow-sm [&_button]:!border-[#E5E5E5] [&_button]:!bg-white"
+        />
+      </ReactFlow>
     </div>
   )
 }
