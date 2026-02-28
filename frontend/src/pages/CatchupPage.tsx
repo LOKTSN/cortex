@@ -3,12 +3,10 @@ import { useParams, Link } from "react-router-dom"
 import { ArrowLeft } from "lucide-react"
 import ReactMarkdown from "react-markdown"
 import remarkGfm from "remark-gfm"
-import { CopilotKit } from "@copilotkit/react-core"
-import { CopilotChat } from "@copilotkit/react-ui"
-import "@copilotkit/react-ui/styles.css"
 import { useTopicsStore } from "@/stores/topics-store"
 import { Badge } from "@/components/ui/badge"
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
+import { ChatPanel } from "@/components/ChatPanel"
 import { Separator } from "@/components/ui/separator"
 
 const categoryVariant: Record<string, "breaking" | "paper" | "trending" | "repo" | "podcast"> = {
@@ -80,9 +78,10 @@ function StudioHome() {
               <p className="text-sm font-semibold">Ask Cortex</p>
             </div>
             <div className="h-[500px]">
-              <CopilotChat
-                instructions={`You are Cortex, an AI research companion. Here are today's topics:\n\n${topics.map((t) => `${t.category}: ${t.title} — ${t.description}`).join("\n\n")}`}
-                labels={{ title: "Cortex", initial: "Hi! I'm your AI research companion. Ask me about any of today's topics, or anything else you're curious about." }}
+              <ChatPanel
+                title="Cortex"
+                initialMessage="Hi! I'm your AI research companion. Ask me about any of today's topics, or anything else you're curious about."
+                context={topics.map((t) => `${t.category}: ${t.title} — ${t.description}`).join("\n\n")}
               />
             </div>
           </div>
@@ -106,11 +105,7 @@ export function CatchupPage() {
 
   // No slug — show studio landing
   if (!slug) {
-    return (
-      <CopilotKit runtimeUrl="/copilotkit">
-        <StudioHome />
-      </CopilotKit>
-    )
+    return <StudioHome />
   }
 
   if (!selectedTopic) {
@@ -126,7 +121,6 @@ export function CatchupPage() {
   }
 
   return (
-    <CopilotKit runtimeUrl="/copilotkit">
     <div className="mx-auto max-w-5xl px-6 py-8">
       <Link to="/catchup" className="mb-4 inline-flex items-center gap-1 text-sm text-text-muted hover:text-text">
         <ArrowLeft className="h-4 w-4" />
@@ -200,15 +194,15 @@ export function CatchupPage() {
               <p className="text-sm font-semibold">Ask about this topic</p>
             </div>
             <div className="h-[400px]">
-              <CopilotChat
-                instructions={`You are Cortex, an AI research companion. The user is reading about "${selectedTopic.title}". Here is the full synthesis:\n\n${selectedTopic.synthesis}`}
-                labels={{ title: "Cortex", initial: `I can help you understand "${selectedTopic.title}". Ask me anything about this topic!` }}
+              <ChatPanel
+                title="Cortex"
+                initialMessage={`I can help you understand "${selectedTopic.title}". Ask me anything about this topic!`}
+                context={selectedTopic.synthesis}
               />
             </div>
           </div>
         </div>
       </div>
     </div>
-    </CopilotKit>
   )
 }
