@@ -7,7 +7,7 @@ import edgeIcon from "@/assets/your_edge.svg"
 
 const navItems = [
   { to: "/", label: "Essential", icon: essentialIcon },
-  { to: "/catchup", label: "Catch-up", icon: catchupIcon },
+  { to: "/catchup", label: "Studio", icon: catchupIcon },
   { to: "/edge", label: "Your Edge", icon: edgeIcon },
 ]
 

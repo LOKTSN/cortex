@@ -1,0 +1,30 @@
+category: trending
+date: '2026-02-24'
+generated:
+  audio: false
+  diagrams: []
+  jingle: false
+  synthesis: true
+  video: false
+relevance_reason: 'Eliminates the need for speculative decoding infrastructure while
+  achieving 3x speedup. Targets the major bottleneck in production AI: latency at
+  scale for reasoning models that generate thousands of tokens. Deployable without
+  auxiliary verifiers or specialized inference code.'
+relevance_score: 0.95
+slug: multi-token-prediction-technique-triples-llm-inference-speed
+sources:
+- title: Multi-token prediction technique triples LLM inference speed
+  type: secondary
+  url: https://www.infoworld.com/article/4136453/multi-token-prediction-technique-triples-llm-inference-speed-without-auxiliary-draft-models.html
+- title: Researchers baked 3x inference speedups directly into LLM weights
+  type: secondary
+  url: https://www.venturebeat.com/orchestration/researchers-baked-3x-inference-speedups-directly-into-llm-weights-without
+status: new
+tags:
+- inference
+- multi-token
+- prediction
+- speed
+- technique
+- triples
+title: Multi-Token Prediction Technique Triples LLM Inference Speed

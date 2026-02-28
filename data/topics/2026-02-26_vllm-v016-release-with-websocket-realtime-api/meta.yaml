@@ -1,0 +1,28 @@
+category: trending
+date: '2026-02-26'
+generated:
+  audio: false
+  diagrams: []
+  jingle: false
+  synthesis: true
+  video: false
+relevance_reason: Provides self-hosted alternative to OpenAI's Realtime API for voice-enabled
+  applications. Throughput improvements mean lower cost per request on same hardware.
+  Convergence of model serving and agent runtime requirements.
+relevance_score: 0.9
+slug: vllm-v016-release-with-websocket-realtime-api
+sources:
+- title: vLLM v0.16 Adds WebSocket Realtime API
+  type: secondary
+  url: https://blogs.perficient.com/2026/02/26/vllm-realtime-api-v016/
+- title: vLLM v0.16.0 Release Notes
+  type: primary
+  url: https://github.com/vllm-project/vllm/releases/tag/v0.16.0
+status: new
+tags:
+- realtime
+- release
+- v016
+- vllm
+- websocket
+title: vLLM v0.16 Release with WebSocket Realtime API

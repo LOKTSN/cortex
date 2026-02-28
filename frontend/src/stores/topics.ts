@@ -12,6 +12,7 @@ export interface Topic {
   status: 'new' | 'read' | 'listened' | 'archived'
   sources: { url: string; type: string; title?: string; points?: number }[]
   tags: string[]
+  files: string[]
   paper_meta?: { authors: string; arxiv_id: string; citations: number }
   generated: { synthesis: boolean; audio: boolean; video: boolean; jingle: boolean; diagrams: string[] }
 }
@@ -33,6 +34,7 @@ const SEED_TOPICS: Topic[] = [
       { url: 'https://news.ycombinator.com/item?id=39281247', type: 'hn', points: 847 },
     ],
     tags: ['code-execution', 'gemini', 'tool-use'],
+    files: ['notes.md', 'raw_sources.md', 'synthesis.md'],
     generated: { synthesis: true, audio: false, video: false, jingle: false, diagrams: [] },
   },
   {
@@ -49,6 +51,7 @@ const SEED_TOPICS: Topic[] = [
       { url: 'https://arxiv.org/abs/2602.14421', type: 'arxiv', title: 'arxiv 2602.14421' },
     ],
     tags: ['attention', 'long-context', 'efficiency'],
+    files: ['notes.md', 'raw_sources.md', 'synthesis.md'],
     paper_meta: { authors: 'Chen et al.', arxiv_id: '2602.14421', citations: 23 },
     generated: { synthesis: true, audio: false, video: false, jingle: false, diagrams: [] },
   },
@@ -68,6 +71,7 @@ const SEED_TOPICS: Topic[] = [
       { url: 'https://techcrunch.com/eu-ai-act', type: 'blog', title: 'TechCrunch' },
     ],
     tags: ['regulation', 'eu', 'compliance'],
+    files: ['notes.md', 'raw_sources.md', 'synthesis.md'],
     generated: { synthesis: true, audio: false, video: false, jingle: false, diagrams: [] },
   },
 ]
