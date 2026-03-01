@@ -339,7 +339,7 @@ function WebAudioPlayer({ url }: { url: string }) {
 
 function StudioContent({
   type,
-  slug,
+  slug: _slug,
   diagramUrl,
   audioUrl,
   isGenerating,
