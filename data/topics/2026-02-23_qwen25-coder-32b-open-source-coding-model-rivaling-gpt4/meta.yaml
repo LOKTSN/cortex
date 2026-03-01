@@ -1,0 +1,28 @@
+category: trending
+date: '2026-02-23'
+generated:
+  audio: false
+  diagrams: []
+  jingle: false
+  synthesis: true
+  video: false
+relevance_reason: Alibaba's Qwen2.5-Coder-32B matches GPT-4-level coding performance
+  as a fully open model. 92.7% on HumanEval. Available on Ollama and HuggingFace.
+  Game-changer for self-hosted coding agents.
+relevance_score: 0.88
+slug: qwen25-coder-32b-open-source-coding-model-rivaling-gpt4
+sources:
+- title: Qwen2.5-Coder on Hugging Face
+  type: primary
+  url: https://huggingface.co/Qwen/Qwen2.5-Coder-32B-Instruct
+- title: GitHub — QwenLM/Qwen2.5-Coder
+  type: secondary
+  url: https://github.com/QwenLM/Qwen2.5-Coder
+status: new
+tags:
+- qwen
+- coding
+- open-source
+- model
+- alibaba
+title: 'Qwen2.5-Coder-32B: Open-Source Coding Model Rivaling GPT-4 on HumanEval'

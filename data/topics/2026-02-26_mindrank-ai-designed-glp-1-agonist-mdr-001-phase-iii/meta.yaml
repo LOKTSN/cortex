@@ -1,0 +1,29 @@
+category: trending
+date: '2026-02-26'
+generated:
+  audio: false
+  diagrams: []
+  jingle: false
+  synthesis: true
+  video: false
+relevance_reason: This marks a significant milestone for AI-driven drug development
+  - one of the first AI-designed molecules to reach late-stage clinical trials. Success
+  would validate AI platforms for end-to-end drug discovery and accelerate the field.
+relevance_score: 0.85
+slug: mindrank-ai-designed-glp-1-agonist-mdr-001-phase-iii
+sources:
+- title: MindRank Announces First Patient Dosed in Phase III Trial
+  type: primary
+  url: https://www.globenewswire.com/news-release/2026/02/26/3245165/0/en/MindRank-Announces-First-Patient-Dosed-in-Phase-III-Trial-of-AI-Designed-Oral-GLP-1-Receptor-Agonist-MDR-001.html
+- title: MindRank Phase III Trial
+  type: primary
+  url: https://www.biospace.com/press-releases/mindrank-announces-first-patient-dosed-in-phase-iii-trial-of-ai-designed-oral-glp-1-receptor-agonist-mdr-001
+status: new
+tags:
+- agonist
+- ai-designed
+- glp-1
+- mdr-001
+- mindrank
+- phase
+title: MindRank AI-Designed GLP-1 Agonist MDR-001 Phase III

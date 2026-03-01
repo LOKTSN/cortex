@@ -1,0 +1,28 @@
+category: repo
+date: '2026-02-22'
+generated:
+  audio: false
+  diagrams: []
+  jingle: false
+  synthesis: true
+  video: false
+relevance_reason: OpenRouter aggregates 200+ LLM providers behind a single API. Smart
+  routing picks the best model for each request. Essential infrastructure for production
+  agent systems that need provider diversity and fallback.
+relevance_score: 0.83
+slug: openrouter-unified-api-for-200-llm-models-with-smart-routing
+sources:
+- title: OpenRouter API
+  type: primary
+  url: https://openrouter.ai
+- title: GitHub — OpenRouterTeam/openrouter-runner
+  type: secondary
+  url: https://github.com/OpenRouterTeam/openrouter-runner
+status: new
+tags:
+- openrouter
+- api
+- routing
+- llm
+- multi-provider
+title: 'OpenRouter: Unified API for 200+ LLM Models with Smart Routing'

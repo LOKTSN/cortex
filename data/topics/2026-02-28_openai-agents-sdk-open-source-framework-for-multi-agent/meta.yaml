@@ -1,0 +1,28 @@
+category: repo
+date: '2026-02-28'
+generated:
+  audio: false
+  diagrams: []
+  jingle: false
+  synthesis: true
+  video: false
+relevance_reason: OpenAI's official agent framework released as open source. Handoff
+  primitives, guardrails, and tracing built in. Direct competitor to LangGraph and
+  CrewAI.
+relevance_score: 0.95
+slug: openai-agents-sdk-open-source-framework-for-multi-agent
+sources:
+- title: GitHub — openai/openai-agents-python
+  type: primary
+  url: https://github.com/openai/openai-agents-python
+- title: OpenAI Agents SDK Announcement
+  type: secondary
+  url: https://openai.com/index/new-tools-for-building-agents/
+status: new
+tags:
+- openai
+- agents
+- multi-agent
+- orchestration
+- sdk
+title: 'OpenAI Agents SDK: Open-Source Framework for Multi-Agent Orchestration'

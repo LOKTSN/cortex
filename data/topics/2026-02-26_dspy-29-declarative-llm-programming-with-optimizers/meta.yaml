@@ -1,0 +1,25 @@
+category: repo
+date: '2026-02-26'
+generated:
+  audio: false
+  diagrams: []
+  jingle: false
+  synthesis: true
+  video: false
+relevance_reason: DSPy replaces manual prompt engineering with declarative modules
+  and automatic optimizers. Stanford NLP research turned production tool — fundamentally
+  different approach to building LLM applications.
+relevance_score: 0.88
+slug: dspy-29-declarative-llm-programming-with-optimizers
+sources:
+- title: GitHub — stanfordnlp/dspy
+  type: primary
+  url: https://github.com/stanfordnlp/dspy
+status: new
+tags:
+- dspy
+- prompt-optimization
+- llm
+- declarative
+- stanford
+title: 'DSPy 2.9: Declarative LLM Programming with Automatic Prompt Optimization'

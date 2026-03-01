@@ -1,0 +1,29 @@
+category: paper
+date: '2026-02-24'
+generated:
+  audio: false
+  diagrams: []
+  jingle: false
+  synthesis: true
+  video: false
+relevance_reason: Indicates emerging academic focus on formalizing agent architectures
+  and skill acquisition. Tool-R0's self-evolving capability addresses the limitation
+  of requiring prior training data - significant for production agent deployments.
+relevance_score: 0.75
+slug: agent-skills-systematization-new-arxiv-papers-on-llm-agent
+sources:
+- title: Agent Skills for LLMs
+  type: primary
+  url: https://www.arxiv.org/abs/2602.12430
+- title: 'SoK: Agentic Skills'
+  type: primary
+  url: https://www.arxiv.org/abs/2602.20867
+status: new
+tags:
+- agent
+- architecture
+- arxiv
+- papers
+- skills
+- systematization
+title: 'Agent Skills Systematization: New ArXiv Papers on LLM Agent Architecture'

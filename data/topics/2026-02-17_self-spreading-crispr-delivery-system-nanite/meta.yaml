@@ -1,0 +1,29 @@
+category: trending
+date: '2026-02-17'
+generated:
+  audio: false
+  diagrams: []
+  jingle: false
+  synthesis: true
+  video: false
+relevance_reason: This represents a conceptual shift in therapeutic delivery - the
+  ability to spread beyond initially edited cells could enable lower dosing, reduced
+  immune responses, and treatment of tissues previously difficult to reach with gene
+  therapy.
+relevance_score: 0.88
+slug: self-spreading-crispr-delivery-system-nanite
+sources:
+- title: Souped-Up CRISPR Gene Editor Replicates and Spreads Like a Virus
+  type: secondary
+  url: https://singularityhub.com/2026/02/17/souped-up-crispr-gene-editor-replicates-and-spreads-like-a-virus/
+- title: NANITE preprint
+  type: primary
+  url: https://www.biorxiv.org/content/10.64898/2026.01.13.699115v1
+status: new
+tags:
+- crispr
+- delivery
+- nanite
+- self-spreading
+- system
+title: Self-Spreading CRISPR Delivery System (NANITE)

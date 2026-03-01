@@ -55,12 +55,22 @@ export const useTopicsStore = create<TopicsState>((set, get) => ({
     try {
       const res = await fetch(`${API_BASE}/topics`)
       if (!res.ok) throw new Error(`${res.status}`)
-      const data = await res.json()
-      const topics = (data as unknown[]).map((t, i) => apiTopicToTopic(t, i))
-      set({ topics, loading: false })
+      const data = await res.json() as Record<string, unknown>[]
+      const topics = data.map((t, i) => apiTopicToTopic(t, i))
+
+      // Build aggregate TL;DR from individual topic tldrs
+      const bullets = data
+        .slice(0, 5)
+        .map((t, i) => `**${i + 1}. ${t.title}** — ${t.tldr || t.summary || ""}`)
+        .filter((b) => b.length > 10)
+      const tldr = bullets.length > 0
+        ? `While you were away, ${bullets.length} developments happened:\n\n${bullets.join("\n\n")}`
+        : mockTldr
+
+      set({ topics, tldr, loading: false })
     } catch {
       // Fall back to mock data
-      set({ topics: mockTopics, loading: false })
+      set({ topics: mockTopics, tldr: mockTldr, loading: false })
     }
   },
 

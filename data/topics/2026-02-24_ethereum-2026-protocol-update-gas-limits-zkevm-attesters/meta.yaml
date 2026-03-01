@@ -1,0 +1,28 @@
+category: trending
+date: '2026-02-24'
+generated:
+  audio: false
+  diagrams: []
+  jingle: false
+  synthesis: true
+  video: false
+relevance_reason: First major acknowledgment that L2-centric scaling strategy needs
+  recalibration. zkEVM attesters enable parallel transaction verification without
+  re-execution, potentially fundamentally changing L1-L2 economics and value accrual.
+relevance_score: 0.9
+slug: ethereum-2026-protocol-update-gas-limits-zkevm-attesters
+sources:
+- title: Ethereum Unveils 2026 Protocol Update
+  type: secondary
+  url: https://www.ainvest.com/news/ethereum-unveils-2026-protocol-update-focused-scalability-ux-quantum-resistance-2602/
+status: new
+tags:
+- '2026'
+- attesters
+- ethereum
+- limits
+- protocol
+- quantum
+- resistance
+- update
+title: Ethereum 2026 Protocol Update - Gas Limits, zkEVM Attesters, Quantum Resistance

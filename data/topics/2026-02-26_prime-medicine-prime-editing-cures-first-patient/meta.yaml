@@ -1,0 +1,27 @@
+category: trending
+date: '2026-02-26'
+generated:
+  audio: false
+  diagrams: []
+  jingle: false
+  synthesis: true
+  video: false
+relevance_reason: This clinical success validates prime editing as a therapeutic modality
+  and demonstrates it can cure genetic diseases that may be untreatable with other
+  CRISPR approaches. First proof-of-concept for precise, allogeneic prime editing
+  therapy.
+relevance_score: 0.75
+slug: prime-medicine-prime-editing-cures-first-patient
+sources:
+- title: B.C. man cured of rare disease in world-first for new gene-editing technology
+  type: secondary
+  url: https://lethbridgeherald.com/news/national-news/2026/02/26/b-c-man-cured-of-rare-disease-in-world-first-for-new-gene-editing-technology/
+status: new
+tags:
+- cures
+- editing
+- first
+- medicine
+- patient
+- prime
+title: Prime Medicine Prime Editing Cures First Patient

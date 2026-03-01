@@ -1,0 +1,28 @@
+field: Climate Tech
+focus_areas:
+  - Renewable energy technology
+  - Carbon capture and storage
+  - Battery and energy storage
+  - Sustainable materials
+  - Climate policy and markets
+level: intermediate
+depth: executive
+goal: stay_current
+custom_instructions: Track renewable energy breakthroughs, carbon capture milestones, battery technology advances, climate policy changes, and sustainability innovations. Focus on developments with measurable impact and commercial viability.
+breaking_alerts: false
+interval: daily_6am
+time_budget_min: 10
+sources:
+  - type: exa
+    id: exa_climate
+    query: renewable energy carbon capture battery technology climate tech
+    category: news
+    enabled: true
+  - type: reddit
+    id: reddit_climate
+    subreddits: [ClimateActionPlan, energy, RenewableEnergy]
+    enabled: true
+  - type: hackernews
+    id: hn_climate
+    filter: renewable energy OR carbon capture OR climate tech OR battery
+    enabled: true

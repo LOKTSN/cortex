@@ -1,0 +1,25 @@
+category: repo
+date: '2026-02-25'
+generated:
+  audio: false
+  diagrams: []
+  jingle: false
+  synthesis: true
+  video: false
+relevance_reason: Mem0 provides structured memory for AI agents — user preferences,
+  facts, and context that persist across sessions. Solves the statelessness problem
+  that limits most agent architectures.
+relevance_score: 0.87
+slug: mem0-memory-layer-for-ai-agents-and-assistants
+sources:
+- title: GitHub — mem0ai/mem0
+  type: primary
+  url: https://github.com/mem0ai/mem0
+status: new
+tags:
+- memory
+- agent
+- persistence
+- context
+- personalization
+title: 'Mem0: Memory Layer for AI Agents — Persistent Context Across Sessions'

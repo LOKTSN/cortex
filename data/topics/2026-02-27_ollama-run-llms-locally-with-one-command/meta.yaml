@@ -1,0 +1,25 @@
+category: repo
+date: '2026-02-27'
+generated:
+  audio: false
+  diagrams: []
+  jingle: false
+  synthesis: true
+  video: false
+relevance_reason: Ollama has become the Docker of LLMs — pull and run any model with
+  one command. 120k+ stars. Vision model support and structured output make it the
+  easiest path to local AI agent development.
+relevance_score: 0.92
+slug: ollama-run-llms-locally-with-one-command
+sources:
+- title: GitHub — ollama/ollama
+  type: primary
+  url: https://github.com/ollama/ollama
+status: new
+tags:
+- ollama
+- local-llm
+- inference
+- self-hosted
+- privacy
+title: 'Ollama: Run LLMs Locally with One Command — Now with Vision and Tool Calling'

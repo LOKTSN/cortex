@@ -1,0 +1,25 @@
+category: repo
+date: '2026-02-25'
+generated:
+  audio: false
+  diagrams: []
+  jingle: false
+  synthesis: true
+  video: false
+relevance_reason: Browser Use enables LLM agents to control web browsers using vision
+  models. 50k+ GitHub stars in months. Key primitive for autonomous agents that need
+  to interact with the web — fills a critical gap in agent toolchains.
+relevance_score: 0.9
+slug: browser-use-ai-agent-browser-automation-with-vision
+sources:
+- title: GitHub — browser-use/browser-use
+  type: primary
+  url: https://github.com/browser-use/browser-use
+status: new
+tags:
+- browser-automation
+- agent
+- vision
+- web-scraping
+- computer-use
+title: 'Browser Use: AI Agent Browser Automation with Vision Models'

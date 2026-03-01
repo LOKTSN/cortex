@@ -1,0 +1,26 @@
+category: trending
+date: '2026-02-26'
+generated:
+  audio: false
+  diagrams: []
+  jingle: false
+  synthesis: true
+  video: false
+relevance_reason: Significant DeFi launch demonstrating Aptos' capability for high-performance
+  onchain trading. Onchain risk engine and CLOB with sub-50ms block times addresses
+  traditional exchange opacity. 50% of deposits came from Solana/Ethereum during pre-deposit.
+relevance_score: 0.75
+slug: decibel-fully-onchain-perpetuals-exchange-on-aptos
+sources:
+- title: Decibel Launches Fully Onchain Perpetuals Exchange on Aptos Mainnet
+  type: primary
+  url: https://chainwire.org/2026/02/26/decibel-launches-fully-onchain-perpetuals-exchange-on-aptos-mainnet/
+status: new
+tags:
+- aptos
+- decibel
+- exchange
+- fully
+- onchain
+- perpetuals
+title: Decibel Fully Onchain Perpetuals Exchange on Aptos

@@ -1,0 +1,26 @@
+category: repo
+date: '2026-02-26'
+generated:
+  audio: false
+  diagrams: []
+  jingle: false
+  synthesis: true
+  video: false
+relevance_reason: Paradigm's Rust implementation of the Ethereum execution client.
+  Modular architecture enables building custom chains. Fastest sync times. Critical
+  infrastructure for Ethereum's client diversity goals.
+relevance_score: 0.85
+slug: reth-paradigms-rust-ethereum-execution-client
+sources:
+- title: GitHub — paradigmxyz/reth
+  type: primary
+  url: https://github.com/paradigmxyz/reth
+status: new
+tags:
+- reth
+- ethereum
+- rust
+- client
+- paradigm
+- infrastructure
+title: 'Reth: Paradigm''s Rust Ethereum Client — Modular, Fast, and Production-Ready'

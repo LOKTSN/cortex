@@ -1,0 +1,30 @@
+category: trending
+date: '2026-02-01'
+generated:
+  audio: false
+  diagrams: []
+  jingle: false
+  synthesis: true
+  video: false
+relevance_reason: RadixAttention kernel improves efficiency for complex generation
+  scenarios with prefix caching. SGLang remains the preferred engine for structured
+  reasoning and agent-based workflows, complementing vLLM's throughput focus.
+relevance_score: 0.72
+slug: sglang-2601-radixattention-gpu-kernel-and-enhanced-model
+sources:
+- title: SGLang Release Notes
+  type: primary
+  url: https://docs.nvidia.com/deeplearning/frameworks/sglang-release-notes/index.html
+- title: SGLang Nvidia Roadmap Q1 2026
+  type: primary
+  url: https://github.com/sgl-project/sglang/issues/17130
+status: new
+tags:
+- '2601'
+- enhanced
+- kernel
+- model
+- radixattention
+- sglang
+- support
+title: 'SGLang 26.01: RadixAttention GPU Kernel and Enhanced Model Support'

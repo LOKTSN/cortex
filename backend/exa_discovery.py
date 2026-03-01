@@ -221,14 +221,26 @@ Use exa_search with MULTIPLE targeted queries. Never rely on one broad search.
 IMPORTANT: Always pass days_back={time_window_days} to exa_search to limit results to the monitoring window.
 
 Search strategy:
-1. Break the task_text into 3-5 concrete search angles:
-   - Search by subtheme (e.g., "agent framework release 2026")
-   - Search by actor (e.g., "LangChain announcement", "OpenAI agents SDK")
-   - Search by release type (e.g., "open source LLM tool launch")
-   - Search by source class (e.g., "arxiv agent orchestration paper")
+1. Break the task_text into 3-5 SPECIFIC search angles. Generic queries return noise.
+   BAD queries (too broad, return listicles):
+   - "AI agents news"
+   - "machine learning developments"
+   - "LLM updates 2026"
+   GOOD queries (specific technology + action + timeframe):
+   - "MCP Model Context Protocol new server implementation"
+   - "multi-agent orchestration framework github release"
+   - "function calling tool use benchmark evaluation results"
+   - "speculative decoding inference optimization paper arxiv"
+   - "Claude Code Cursor Copilot agentic coding comparison"
+
+   Angle types:
+   - Specific technology or protocol (e.g., "MCP server", "RLHF DPO training")
+   - Actor + action (e.g., "Anthropic Claude agent SDK", "vLLM release")
+   - Research area + venue (e.g., "arxiv multi-agent planning paper")
+   - Practical pattern (e.g., "agentic coding workflow production experience")
 2. Run each search separately with exa_search (always with days_back={time_window_days})
-3. Use web_fetch to read the most promising results — verify they have substance
-4. Compare primary sources against secondary coverage
+3. Use web_fetch on the top 2-3 results per search — verify substance and extract key details
+4. CROSS-REFERENCE: When you find a secondary source (blog post, news article), search for the primary source (paper, repo, official announcement) via a follow-up search
 
 ## How to Filter
 
@@ -240,17 +252,19 @@ Kill these:
 - Generic AI hype with no specific development
 - Duplicate coverage of the same underlying event
 - Tiny feature updates with no downstream consequence
+- Newsletter issues (The Batch, TLDR AI) — find the underlying developments instead
+- Opinion pieces without new facts or data
 
 Keep these:
-- Notable framework/tool releases
-- Important papers with novel results
+- Notable framework/tool releases with specific features
+- Important papers with novel results and quantitative improvements
 - Production-grade open-source launches
-- Benchmark shifts
-- Emerging failure modes or architectural patterns
+- Benchmark shifts with specific numbers
+- Emerging engineering patterns backed by real experience
 
 ## How to Rank
 
-Rank by materiality, not by attention or buzz.
+Rank by materiality, not by attention or buzz. A paper with a 2x speedup matters more than a viral tweet.
 
 ## Output Format
 
@@ -259,18 +273,30 @@ Output ONLY a valid JSON array. No markdown, no prose, no explanation outside th
 Each candidate:
 {{
   "candidate_id": "cand_001",
-  "title": "Short descriptive title",
-  "item_type": "framework_release | paper | tool_launch | benchmark | trending",
+  "title": "Descriptive title of the development (5-10 words, NOT a source name or headline)",
+  "item_type": "framework_release | paper | tool_launch | benchmark | pattern",
   "date": "YYYY-MM-DD or null",
-  "summary": "2-3 sentences. What happened.",
-  "why_it_matters": "1-2 sentences. Why this matters for the monitoring scope.",
+  "summary": "2-3 sentences. What specifically happened — include names, versions, numbers.",
+  "why_it_matters": "1-2 sentences. Concrete impact on practitioners — what changes for them.",
   "importance_score": 0.0-1.0,
   "confidence": 0.0-1.0,
   "source_evidence": [
     {{"url": "...", "title": "...", "source_type": "primary | secondary"}}
   ],
-  "github_url": "https://github.com/... or null"
+  "github_url": "https://github.com/... or null",
+  "tags": ["tag1", "tag2", "tag3"]
 }}
+
+Title rules:
+- GOOD: "vLLM v0.16 Adds WebSocket Realtime API"
+- GOOD: "Adaptive Drafter Method Doubles RL Training Speed"
+- BAD: "The Batch - Issue 342" (newsletter name, not a development)
+- BAD: "Big news from OpenAI" (vague, no specifics)
+- BAD: "LLM Race; War of the Frontier..." (clickbait, truncated)
+
+Tags should be semantic concepts, not words from the title:
+- GOOD: ["speculative-decoding", "inference-optimization", "arxiv"]
+- BAD: ["doubles", "speed", "training"]
 
 Sort by importance_score descending.
 
@@ -289,22 +315,35 @@ Sort by importance_score descending.
 # Stage 3: Synthesize candidates into topic folders (direct LLM, no agent loop)
 # ---------------------------------------------------------------------------
 
-SYNTHESIS_PROMPT = """Write a concise synthesis of this development for a personalized learning feed.
+SYNTHESIS_PROMPT = """You are writing for a personalized AI learning feed. Your reader is a {level}-level practitioner who wants {depth} coverage.
 
-Topic: {title}
+## Development
+Title: {title}
 Summary: {summary}
 Why it matters: {why_it_matters}
-Sources: {sources_text}
-User level: {level}
-Depth: {depth}
 
-Guidelines:
-- Start with a one-paragraph TL;DR
-- Then 2-3 key insights or developments
-- Adapt language to the user's level ({level}) and depth ({depth})
-- End with "Why this matters" (one sentence)
+## Sources
+{sources_text}
+
+## Instructions
+
+Write a synthesis with this exact structure:
+
+**TL;DR** (2-3 sentences max): What happened and why it matters. Be specific — include names, versions, numbers, dates. A reader should learn something concrete from just this paragraph.
+
+**Key Insights** (2-3 numbered items, each with a bold heading): Each insight should be non-obvious. Don't restate the summary. Extract:
+- Technical mechanisms or architectural decisions
+- Quantitative results with baselines for comparison
+- Practical implications — what should a practitioner do differently?
+
+**Why This Matters** (1 sentence): Connect to the reader's work. Be concrete, not generic.
+
+## Rules
 - Use markdown formatting
-- Keep it under 400 words"""
+- Keep under 350 words total
+- NEVER use these filler phrases: "the landscape is shifting", "this is significant because", "represents a paradigm shift", "noteworthy development", "the field continues to evolve"
+- Include specific numbers when available (percentages, version numbers, benchmarks)
+- If a claim lacks evidence in the sources, say so rather than asserting it"""
 
 
 async def _synthesize_candidate(candidate: dict, profile: dict) -> str:
@@ -352,20 +391,23 @@ def _write_topic_folder(candidate: dict, synthesis: str) -> str | None:
 
     # Map item_type to category
     type_to_cat = {
-        "framework_release": "trending",
+        "framework_release": "release",
         "paper": "paper",
-        "tool_launch": "trending",
+        "tool_launch": "release",
         "benchmark": "paper",
+        "pattern": "trending",
         "trending": "trending",
     }
     category = type_to_cat.get(candidate.get("item_type", ""), "trending")
 
-    # Extract tags from title
-    stop_words = {"with", "from", "that", "this", "will", "have", "been", "the",
-                  "and", "for", "new", "its", "are", "was", "has"}
-    words = candidate.get("title", "").lower().split()
-    words = [re.sub(r"[^\w-]", "", w) for w in words]
-    tags = sorted({w for w in words if len(w) > 3 and w not in stop_words})[:8]
+    # Use agent-generated tags if available, fall back to title extraction
+    tags = candidate.get("tags", [])
+    if not tags:
+        stop_words = {"with", "from", "that", "this", "will", "have", "been", "the",
+                      "and", "for", "new", "its", "are", "was", "has"}
+        words = candidate.get("title", "").lower().split()
+        words = [re.sub(r"[^\w-]", "", w) for w in words]
+        tags = sorted({w for w in words if len(w) > 3 and w not in stop_words})[:8]
 
     # --- meta.yaml ---
     sources_list = []

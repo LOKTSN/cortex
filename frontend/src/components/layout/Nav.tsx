@@ -4,11 +4,13 @@ import logoSvg from "@/assets/logo.svg"
 import essentialIcon from "@/assets/boxicons_Essential.svg"
 import catchupIcon from "@/assets/eos-icons_catchup.svg"
 import edgeIcon from "@/assets/your_edge.svg"
+import templateIcon from "@/assets/template_icon.svg"
 
 const navItems = [
-  { to: "/", label: "Essential", icon: essentialIcon },
+  { to: "/", label: "Essentials", icon: essentialIcon },
   { to: "/catchup", label: "Studio", icon: catchupIcon },
   { to: "/edge", label: "Your Edge", icon: edgeIcon },
+  { to: "/template", label: "Template", icon: templateIcon },
 ]
 
 export function Nav() {
@@ -18,7 +20,7 @@ export function Nav() {
   return (
     <nav className="sticky top-0 z-40 flex items-center justify-between border-b bg-white px-6 py-3">
       <Link to="/" className="flex items-center gap-2">
-        <img src={logoSvg} alt="Frontexh AI" className="h-8" />
+        <img src={logoSvg} alt="Cortex" className="h-8" />
       </Link>
 
       <div className="flex items-center gap-1">
@@ -46,15 +48,12 @@ export function Nav() {
 
       <div>
         {isOnboarded ? (
-          <Link
-            to="/settings"
-            className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-text-muted hover:bg-bg-muted"
-          >
+          <div className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-text-muted">
             <div className="flex h-7 w-7 items-center justify-center rounded-full bg-accent text-xs text-white">
               {userName.charAt(0)}
             </div>
             {userName}
-          </Link>
+          </div>
         ) : (
           <Link
             to="/?signup=true"

@@ -1,6 +1,6 @@
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { useParams, Link } from "react-router-dom"
-import { ArrowLeft } from "lucide-react"
+import { ArrowLeft, FileText, FolderOpen } from "lucide-react"
 import ReactMarkdown from "react-markdown"
 import remarkGfm from "remark-gfm"
 import { useTopicsStore } from "@/stores/topics-store"
@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge"
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
 import { ChatPanel } from "@/components/ChatPanel"
 import { Separator } from "@/components/ui/separator"
+import { ScrollArea } from "@/components/ui/scroll-area"
 
 const categoryVariant: Record<string, "breaking" | "paper" | "trending" | "repo" | "podcast"> = {
   BREAKING: "breaking",
@@ -18,11 +19,16 @@ const categoryVariant: Record<string, "breaking" | "paper" | "trending" | "repo"
 }
 
 const categoryConfig: Record<string, { emoji: string; variant: "breaking" | "paper" | "trending" | "repo" | "podcast" }> = {
-  BREAKING: { emoji: "🔴", variant: "breaking" },
-  "NEW PAPER": { emoji: "📄", variant: "paper" },
-  TRENDING: { emoji: "🔥", variant: "trending" },
-  REPO: { emoji: "📦", variant: "repo" },
-  PODCAST: { emoji: "🎙️", variant: "podcast" },
+  BREAKING: { emoji: "\uD83D\uDD34", variant: "breaking" },
+  "NEW PAPER": { emoji: "\uD83D\uDCC4", variant: "paper" },
+  TRENDING: { emoji: "\uD83D\uDD25", variant: "trending" },
+  REPO: { emoji: "\uD83D\uDCE6", variant: "repo" },
+  PODCAST: { emoji: "\uD83C\uDF99\uFE0F", variant: "podcast" },
+}
+
+interface TopicFile {
+  name: string
+  size?: number
 }
 
 function StudioHome() {
@@ -91,6 +97,109 @@ function StudioHome() {
   )
 }
 
+function FilesPanel({ slug }: { slug: string }) {
+  const [files, setFiles] = useState<TopicFile[]>([])
+  const [selectedFile, setSelectedFile] = useState<string | null>(null)
+  const [fileContent, setFileContent] = useState<string>("")
+  const [loading, setLoading] = useState(false)
+
+  useEffect(() => {
+    async function loadFiles() {
+      try {
+        const res = await fetch(`/api/topics/${slug}/files`)
+        if (!res.ok) return
+        const data = await res.json()
+        setFiles(data)
+        // Auto-select first markdown file
+        const firstMd = data.find((f: TopicFile) => f.name.endsWith(".md"))
+        if (firstMd) {
+          setSelectedFile(firstMd.name)
+        }
+      } catch {
+        // no files available
+      }
+    }
+    loadFiles()
+  }, [slug])
+
+  useEffect(() => {
+    if (!selectedFile) {
+      setFileContent("")
+      return
+    }
+    setLoading(true)
+    fetch(`/api/topics/${slug}/file/${selectedFile}`)
+      .then((res) => (res.ok ? res.text() : ""))
+      .then((text) => {
+        setFileContent(text)
+        setLoading(false)
+      })
+      .catch(() => {
+        setFileContent("")
+        setLoading(false)
+      })
+  }, [slug, selectedFile])
+
+  if (files.length === 0) {
+    return (
+      <div className="flex flex-col items-center justify-center py-16 text-text-muted">
+        <FolderOpen className="h-8 w-8 mb-3 opacity-30" />
+        <p className="text-sm">No files available for this topic.</p>
+      </div>
+    )
+  }
+
+  return (
+    <div className="flex gap-4 min-h-[300px]">
+      {/* File list sidebar */}
+      <div className="w-48 shrink-0 border-r pr-4">
+        <p className="text-xs font-semibold text-text-muted uppercase tracking-wider mb-3">
+          Topic Files
+        </p>
+        <div className="space-y-0.5">
+          {files.map((file) => (
+            <button
+              key={file.name}
+              onClick={() => setSelectedFile(file.name)}
+              className={`flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-xs transition-colors cursor-pointer ${
+                selectedFile === file.name
+                  ? "bg-bg-muted font-medium text-text"
+                  : "text-text-muted hover:bg-bg-muted hover:text-text"
+              }`}
+            >
+              <FileText className="h-3 w-3 shrink-0" />
+              <span className="truncate">{file.name}</span>
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* File content */}
+      <ScrollArea className="flex-1">
+        {loading ? (
+          <div className="flex items-center justify-center py-16">
+            <p className="text-sm text-text-muted">Loading...</p>
+          </div>
+        ) : selectedFile && fileContent ? (
+          <div className="prose prose-sm max-w-none">
+            <div className="flex items-center gap-1.5 text-xs text-text-subtle mb-4">
+              <FolderOpen className="h-3 w-3" />
+              <span>{slug}</span>
+              <span className="text-text-ghost">/</span>
+              <span className="font-medium text-text">{selectedFile}</span>
+            </div>
+            <ReactMarkdown remarkPlugins={[remarkGfm]}>{fileContent}</ReactMarkdown>
+          </div>
+        ) : (
+          <div className="flex items-center justify-center py-16 text-sm text-text-muted">
+            Select a file to view its contents
+          </div>
+        )}
+      </ScrollArea>
+    </div>
+  )
+}
+
 export function CatchupPage() {
   const { slug } = useParams<{ slug: string }>()
   const { selectedTopic, selectTopic, fetchTopics } = useTopicsStore()
@@ -111,7 +220,7 @@ export function CatchupPage() {
   if (!selectedTopic) {
     return (
       <div className="mx-auto max-w-5xl px-6 py-8">
-        <Link to="/catchup" className="inline-flex items-center gap-1 text-sm text-text-muted hover:text-text">
+        <Link to="/" className="inline-flex items-center gap-1 text-sm text-text-muted hover:text-text">
           <ArrowLeft className="h-4 w-4" />
           Back
         </Link>
@@ -122,7 +231,7 @@ export function CatchupPage() {
 
   return (
     <div className="mx-auto max-w-5xl px-6 py-8">
-      <Link to="/catchup" className="mb-4 inline-flex items-center gap-1 text-sm text-text-muted hover:text-text">
+      <Link to="/" className="mb-4 inline-flex items-center gap-1 text-sm text-text-muted hover:text-text">
         <ArrowLeft className="h-4 w-4" />
         Back
       </Link>
@@ -152,6 +261,7 @@ export function CatchupPage() {
           <Tabs defaultValue="summary">
             <TabsList>
               <TabsTrigger value="summary">Summary</TabsTrigger>
+              <TabsTrigger value="files">Files</TabsTrigger>
               <TabsTrigger value="audio">Audio</TabsTrigger>
               <TabsTrigger value="diagrams">Diagrams</TabsTrigger>
             </TabsList>
@@ -162,6 +272,10 @@ export function CatchupPage() {
                   {selectedTopic.synthesis}
                 </ReactMarkdown>
               </div>
+            </TabsContent>
+
+            <TabsContent value="files">
+              <FilesPanel slug={slug} />
             </TabsContent>
 
             <TabsContent value="audio">

@@ -1,0 +1,25 @@
+category: repo
+date: '2026-02-23'
+generated:
+  audio: false
+  diagrams: []
+  jingle: false
+  synthesis: true
+  video: false
+relevance_reason: LlamaIndex pioneered the RAG framework space and has evolved into
+  a full agentic RAG platform. Workflows enable complex retrieval pipelines, and knowledge
+  graph support adds structured reasoning to document QA.
+relevance_score: 0.87
+slug: llamaindex-agentic-rag-with-workflows-and-knowledge-graphs
+sources:
+- title: GitHub — run-llama/llama_index
+  type: primary
+  url: https://github.com/run-llama/llama_index
+status: new
+tags:
+- llamaindex
+- rag
+- knowledge-graph
+- agentic
+- workflows
+title: 'LlamaIndex: Agentic RAG with Workflows and Knowledge Graphs'

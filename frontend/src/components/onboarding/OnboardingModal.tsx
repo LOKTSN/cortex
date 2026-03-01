@@ -26,7 +26,7 @@ export function OnboardingModal({ open, onOpenChange }: OnboardingModalProps) {
     const field = onboardingFields.find((f) => f.id === selected)
     setOnboarded("Daniel", field?.label ?? "AI / ML")
     onOpenChange(false)
-    navigate("/settings")
+    navigate("/template")
   }
 
   return (

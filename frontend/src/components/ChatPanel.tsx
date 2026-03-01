@@ -23,6 +23,7 @@ interface ChatPanelProps {
   title: string
   initialMessage: string
   context?: string
+  onResponse?: (data: { reply: string; tools_used: ToolCall[] }) => void
 }
 
 const TOOL_META: Record<string, { icon: typeof Search; label: string; color: string }> = {
@@ -112,7 +113,7 @@ function VoiceStateIndicator({ state, transcript }: { state: VoiceState; transcr
   )
 }
 
-export function ChatPanel({ title, initialMessage, context }: ChatPanelProps) {
+export function ChatPanel({ title, initialMessage, context, onResponse }: ChatPanelProps) {
   const [messages, setMessages] = useState<Message[]>([
     { role: 'assistant', content: initialMessage },
   ])
@@ -222,11 +223,13 @@ export function ChatPanel({ title, initialMessage, context }: ChatPanelProps) {
       })
       if (!res.ok) throw new Error('Chat request failed')
       const data = await res.json()
+      const toolsUsed = data.tools_used || []
       setMessages((prev) => [...prev, {
         role: 'assistant',
         content: data.reply,
-        tools_used: data.tools_used || [],
+        tools_used: toolsUsed,
       }])
+      onResponse?.({ reply: data.reply, tools_used: toolsUsed })
     } catch {
       setMessages((prev) => [
         ...prev,

@@ -1,0 +1,31 @@
+category: trending
+date: '2026-02-24'
+generated:
+  audio: false
+  diagrams: []
+  jingle: false
+  synthesis: true
+  video: false
+relevance_reason: Removes hard dependency on OpenAI for real-time voice/agent applications.
+  Enables cost-effective self-hosted deployment with the same interface, improving
+  throughput and reducing cost-per-request.
+relevance_score: 0.88
+slug: vllm-v016-adds-websocket-realtime-api-for-self-hosted-voice
+sources:
+- title: vLLM v0.16 Release Analysis
+  type: primary
+  url: https://blogs.perficient.com/2026/02/26/vllm-realtime-api-v016/
+- title: vLLM Release Notes
+  type: primary
+  url: https://github.com/vllm-project/vllm/releases/tag/v0.16.0
+status: new
+tags:
+- adds
+- applications
+- realtime
+- self-hosted
+- v016
+- vllm
+- voice
+- websocket
+title: vLLM v0.16 Adds WebSocket Realtime API for Self-Hosted Voice Applications

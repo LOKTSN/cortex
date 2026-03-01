@@ -1,0 +1,25 @@
+category: repo
+date: '2026-02-28'
+generated:
+  audio: false
+  diagrams: []
+  jingle: false
+  synthesis: true
+  video: false
+relevance_reason: CrewAI's role-based multi-agent design is the most intuitive framework
+  for building agent teams. 25k+ stars, active development, and a growing ecosystem
+  of pre-built crews make it the leading choice for multi-agent applications.
+relevance_score: 0.89
+slug: crewai-multi-agent-framework-with-role-based-collaboration
+sources:
+- title: GitHub — crewAIInc/crewAI
+  type: primary
+  url: https://github.com/crewAIInc/crewAI
+status: new
+tags:
+- crewai
+- multi-agent
+- collaboration
+- roles
+- orchestration
+title: 'CrewAI: Multi-Agent Framework with Role-Based Collaboration Patterns'

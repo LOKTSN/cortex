@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Plus, X, Briefcase, Rss, GraduationCap, Layers, Clock, Target, Flag, Timer } from 'lucide-react'
+import { Plus, X, Briefcase, Rss, GraduationCap, Layers, Clock, Target, Flag, Timer, MessageSquare } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 import type { Profile } from '@/stores/profile'
 import { Button } from '@/components/ui/button'
@@ -14,14 +14,15 @@ interface ProfileFormProps {
   onRemoveFocusArea: (area: string) => void
 }
 
-const SOURCE_ICONS: Record<string, string> = {
-  arxiv: '📄',
-  hackernews: '🟧',
-  github: '🐙',
-  reddit: '🔴',
-  podcast: '🎙️',
-  twitter: '🐦',
-  blog: '📰',
+const SOURCE_META: Record<string, { icon: string; label: string }> = {
+  arxiv: { icon: '📄', label: 'Arxiv' },
+  hackernews: { icon: '🟧', label: 'Hacker News' },
+  reddit: { icon: '🔴', label: 'Reddit' },
+  exa: { icon: '🔍', label: 'Web Search' },
+  podcast: { icon: '🎙️', label: 'Podcast' },
+  github: { icon: '🐙', label: 'GitHub' },
+  twitter: { icon: '🐦', label: 'Twitter / X' },
+  blog: { icon: '📰', label: 'Blog' },
 }
 
 export function ProfileForm({ profile, onUpdate, onToggleSource, onAddFocusArea, onRemoveFocusArea }: ProfileFormProps) {
@@ -37,6 +38,17 @@ export function ProfileForm({ profile, onUpdate, onToggleSource, onAddFocusArea,
 
   return (
     <div className="space-y-5">
+      {/* What to track */}
+      <FormSection label="What do you want to stay informed about?" icon={MessageSquare}>
+        <textarea
+          value={profile.custom_instructions || ''}
+          onChange={(e) => onUpdate({ custom_instructions: e.target.value })}
+          placeholder="e.g. I'm building an agent system — I care about tool use, MCP, multi-agent orchestration, and practical implementations over theory..."
+          rows={3}
+          className="form-input w-full resize-y text-sm"
+        />
+      </FormSection>
+
       {/* Field */}
       <FormSection label="Field" icon={Briefcase}>
         <input
@@ -67,10 +79,9 @@ export function ProfileForm({ profile, onUpdate, onToggleSource, onAddFocusArea,
                 className="accent-[var(--color-accent)]"
               />
               <span className="text-sm">
-                {SOURCE_ICONS[source.type] || '📌'}{' '}
-                {source.name || source.id}
+                {(SOURCE_META[source.type] || { icon: '📌' }).icon}{' '}
+                {source.name || SOURCE_META[source.type]?.label || source.type}
               </span>
-              <span className="text-xs text-[var(--color-text-subtle)] ml-auto">{source.type}</span>
             </label>
           ))}
         </div>
@@ -184,6 +195,7 @@ export function ProfileForm({ profile, onUpdate, onToggleSource, onAddFocusArea,
           </span>
         </div>
       </FormSection>
+
     </div>
   )
 }

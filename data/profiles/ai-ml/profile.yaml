@@ -1,0 +1,32 @@
+field: AI / ML
+focus_areas:
+  - Large Language Models
+  - Agent frameworks
+  - RAG and retrieval
+  - Model training and fine-tuning
+  - Inference optimization
+level: advanced
+depth: technical
+goal: stay_current
+custom_instructions: Track breakthroughs in LLMs, agent orchestration, tool use, MCP protocols, and open-source model releases. Focus on practical developments over hype.
+breaking_alerts: false
+interval: daily_6am
+time_budget_min: 15
+sources:
+  - type: arxiv
+    id: arxiv_ai
+    categories: [cs.AI, cs.LG, cs.CL]
+    enabled: true
+  - type: hackernews
+    id: hn
+    filter: AI OR machine learning OR LLM OR transformer
+    enabled: true
+  - type: reddit
+    id: reddit_ml
+    subreddits: [MachineLearning, LocalLLaMA]
+    enabled: true
+  - type: exa
+    id: exa_ai
+    query: AI machine learning LLM agents transformers
+    category: news
+    enabled: true

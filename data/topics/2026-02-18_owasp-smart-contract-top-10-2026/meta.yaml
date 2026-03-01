@@ -1,0 +1,25 @@
+category: trending
+date: '2026-02-18'
+generated:
+  audio: false
+  diagrams: []
+  jingle: false
+  synthesis: true
+  video: false
+relevance_reason: Industry-standard security taxonomy for smart contract development
+  and audit scoping. Reflects shift from isolated code errors toward systemic failure
+  modes. Includes alternate Top 15 Web3 attack vectors covering multisig compromise
+  and supply chain exposure.
+relevance_score: 0.85
+slug: owasp-smart-contract-top-10-2026
+sources:
+- title: CredShields Leads OWASP Smart Contract Top 10 2026
+  type: primary
+  url: https://chainwire.org/2026/02/18/credshields-leads-owasp-smart-contract-top-10-2026-to-raise-smart-contract-security-standards/
+status: new
+tags:
+- '2026'
+- contract
+- owasp
+- smart
+title: OWASP Smart Contract Top 10 2026

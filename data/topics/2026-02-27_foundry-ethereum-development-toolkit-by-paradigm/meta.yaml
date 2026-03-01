@@ -1,0 +1,25 @@
+category: repo
+date: '2026-02-27'
+generated:
+  audio: false
+  diagrams: []
+  jingle: false
+  synthesis: true
+  video: false
+relevance_reason: Foundry has replaced Hardhat as the standard Ethereum dev toolkit.
+  Rust-based, 10-100x faster compilation and testing. Forge, Cast, Anvil, and Chisel
+  cover the full Solidity development lifecycle.
+relevance_score: 0.9
+slug: foundry-ethereum-development-toolkit-by-paradigm
+sources:
+- title: GitHub — foundry-rs/foundry
+  type: primary
+  url: https://github.com/foundry-rs/foundry
+status: new
+tags:
+- foundry
+- ethereum
+- solidity
+- paradigm
+- smart-contracts
+title: 'Foundry: Paradigm''s Blazing-Fast Ethereum Development Toolkit'

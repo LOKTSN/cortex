@@ -1,0 +1,28 @@
+field: Crypto / Web3
+focus_areas:
+  - DeFi protocols
+  - Smart contract security
+  - Layer 2 scaling
+  - Tokenomics and governance
+  - Blockchain infrastructure
+level: intermediate
+depth: technical
+goal: stay_current
+custom_instructions: Track DeFi protocol launches, smart contract exploits, L2 developments, major governance votes, and new blockchain tooling. Ignore price speculation and memecoins.
+breaking_alerts: true
+interval: daily_6am
+time_budget_min: 10
+sources:
+  - type: exa
+    id: exa_crypto
+    query: DeFi blockchain smart contracts Web3 infrastructure
+    category: news
+    enabled: true
+  - type: reddit
+    id: reddit_crypto
+    subreddits: [ethereum, defi, CryptoTechnology]
+    enabled: true
+  - type: hackernews
+    id: hn_crypto
+    filter: blockchain OR DeFi OR smart contract OR Ethereum
+    enabled: true

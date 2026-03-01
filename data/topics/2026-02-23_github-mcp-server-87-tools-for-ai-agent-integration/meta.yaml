@@ -1,0 +1,25 @@
+category: trending
+date: '2026-02-23'
+generated:
+  audio: false
+  diagrams: []
+  jingle: false
+  synthesis: true
+  video: false
+relevance_reason: Demonstrates practical MCP adoption for developer workflows, providing
+  granular GitHub automation through a standardized protocol that connects AI agents
+  to development tools.
+relevance_score: 0.75
+slug: github-mcp-server-87-tools-for-ai-agent-integration
+sources:
+- title: GitHub MCP server repository
+  type: primary
+  url: https://github.com/software-engineer-mj/github-mcp
+status: new
+tags:
+- agent
+- github
+- integration
+- server
+- tools
+title: 'GitHub MCP Server: 87 Tools for AI Agent Integration'

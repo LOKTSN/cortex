@@ -1,0 +1,32 @@
+category: trending
+date: '2026-02-25'
+generated:
+  audio: false
+  diagrams: []
+  jingle: false
+  synthesis: true
+  video: false
+relevance_reason: This marks the end of fragmentation in Microsoft's agentic AI tooling.
+  Developers previously using either AutoGen or Semantic Kernel now have a consolidated
+  path forward. GA expected Q1 2026.
+relevance_score: 0.92
+slug: microsoft-agent-framework-reaches-release-candidate
+sources:
+- title: Microsoft Agent Framework RC Announcement
+  type: primary
+  url: https://devblogs.microsoft.com/foundry/microsoft-agent-framework-reaches-release-candidate/
+- title: GitHub Releases
+  type: primary
+  url: https://github.com/microsoft/agent-framework/releases
+status: new
+tags:
+- agent
+- autogen
+- candidate
+- framework
+- kernel
+- microsoft
+- reaches
+- release
+title: Microsoft Agent Framework Reaches Release Candidate - Unifying AutoGen and
+  Semantic Kernel

@@ -1,0 +1,25 @@
+category: repo
+date: '2026-02-27'
+generated:
+  audio: false
+  diagrams: []
+  jingle: false
+  synthesis: true
+  video: false
+relevance_reason: Purpose-built web crawler for LLM pipelines. Extracts clean markdown,
+  handles JavaScript rendering, and supports concurrent crawling. Essential for RAG
+  systems and knowledge base construction.
+relevance_score: 0.84
+slug: crawl4ai-high-performance-web-crawler-for-llm-data-extraction
+sources:
+- title: GitHub — unclecode/crawl4ai
+  type: primary
+  url: https://github.com/unclecode/crawl4ai
+status: new
+tags:
+- crawler
+- scraping
+- data-extraction
+- llm
+- rag
+title: 'Crawl4AI: High-Performance Web Crawler Optimized for LLM Data Extraction'

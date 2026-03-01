@@ -1,0 +1,28 @@
+field: Cybersecurity
+focus_areas:
+  - Zero-day vulnerabilities
+  - Threat intelligence
+  - Penetration testing tools
+  - Supply chain security
+  - Cloud security
+level: advanced
+depth: technical
+goal: stay_current
+custom_instructions: Track zero-day disclosures, CVEs with real-world impact, new offensive and defensive tooling, APT campaign reports, and cloud security incidents. Prefer primary sources (vendor advisories, researcher blogs) over news aggregation.
+breaking_alerts: true
+interval: daily_6am
+time_budget_min: 10
+sources:
+  - type: exa
+    id: exa_security
+    query: zero-day vulnerability CVE cybersecurity threat intelligence
+    category: news
+    enabled: true
+  - type: reddit
+    id: reddit_security
+    subreddits: [netsec, cybersecurity, ReverseEngineering]
+    enabled: true
+  - type: hackernews
+    id: hn_security
+    filter: vulnerability OR CVE OR zero-day OR security
+    enabled: true

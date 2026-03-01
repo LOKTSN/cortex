@@ -1,0 +1,27 @@
+category: paper
+date: '2026-02-24'
+generated:
+  audio: false
+  diagrams: []
+  jingle: false
+  synthesis: true
+  video: false
+relevance_reason: Establishes first standardized benchmark for AI-assisted smart contract
+  security auditing, a critical need as smart contracts secure $100B+ in assets. OpenAI
+  also announced $10M in API credits for cyber defence work.
+relevance_score: 0.95
+slug: openai-and-paradigm-launch-evmbench-smart-contract-benchmark
+sources:
+- title: OpenAI and Paradigm launch EVMbench smart contract benchmark
+  type: secondary
+  url: https://thepaypers.com/crypto-web3-and-cbdc/news/openai-and-paradigm-launch-evmbench-smart-contract-benchmark
+status: new
+tags:
+- benchmark
+- contract
+- evmbench
+- launch
+- openai
+- paradigm
+- smart
+title: OpenAI and Paradigm Launch EVMbench Smart Contract Benchmark

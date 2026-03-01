@@ -1,0 +1,26 @@
+category: trending
+date: '2026-02-22'
+generated:
+  audio: false
+  diagrams: []
+  jingle: false
+  synthesis: true
+  video: false
+relevance_reason: First DA layer upgrade enabling truly simple cross-chain UX - single-signature
+  transfers eliminate multi-step bridging friction. Could accelerate institutional
+  adoption of cross-chain DeFi by reducing technical complexity.
+relevance_score: 0.85
+slug: celestia-hibiscus-v7-upgrade-single-signature-cross-chain
+sources:
+- title: Celestia Prepares Major March Upgrade
+  type: secondary
+  url: https://www.bitget.com/news/detail/12560605212692
+status: new
+tags:
+- celestia
+- cross-chain
+- hibiscus
+- single-signature
+- transfers
+- upgrade
+title: Celestia Hibiscus V7 Upgrade - Single-Signature Cross-Chain Transfers

@@ -1,0 +1,28 @@
+field: Biotech
+focus_areas:
+  - Genomics and gene editing
+  - Drug discovery and clinical trials
+  - CRISPR applications
+  - Protein folding and design
+  - Synthetic biology
+level: intermediate
+depth: technical
+goal: stay_current
+custom_instructions: Track CRISPR breakthroughs, FDA approvals, novel drug discovery methods, protein engineering advances, and synthetic biology milestones. Focus on peer-reviewed results and clinical trial outcomes.
+breaking_alerts: false
+interval: daily_6am
+time_budget_min: 15
+sources:
+  - type: arxiv
+    id: arxiv_bio
+    categories: [q-bio.GN, q-bio.BM]
+    enabled: true
+  - type: exa
+    id: exa_biotech
+    query: CRISPR genomics drug discovery protein folding biotech
+    category: news
+    enabled: true
+  - type: reddit
+    id: reddit_bio
+    subreddits: [biotech, genomics, CRISPR]
+    enabled: true

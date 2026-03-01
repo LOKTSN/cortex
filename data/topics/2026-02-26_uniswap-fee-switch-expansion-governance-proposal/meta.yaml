@@ -1,0 +1,25 @@
+category: trending
+date: '2026-02-26'
+generated:
+  audio: false
+  diagrams: []
+  jingle: false
+  synthesis: true
+  video: false
+relevance_reason: Major tokenomics shift turning Uniswap into cross-chain revenue-generating
+  protocol. Represents one of largest governance decisions for DeFi in recent memory.
+  Vote would cement direct link between trading volume and UNI value accrual.
+relevance_score: 0.8
+slug: uniswap-fee-switch-expansion-governance-proposal
+sources:
+- title: Uniswap's UNI jumps 15% as governance vote to expand fee switch gains momentum
+  type: secondary
+  url: https://www.coindesk.com/markets/2026/02/26/uniswap-s-uni-jumps-15-as-governance-vote-to-expand-fee-switch-gains-momentum
+status: new
+tags:
+- expansion
+- governance
+- proposal
+- switch
+- uniswap
+title: Uniswap Fee Switch Expansion Governance Proposal

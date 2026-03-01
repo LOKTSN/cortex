@@ -1,0 +1,25 @@
+category: repo
+date: '2026-02-27'
+generated:
+  audio: false
+  diagrams: []
+  jingle: false
+  synthesis: true
+  video: false
+relevance_reason: vLLM is the de facto standard for self-hosted LLM inference. v0.18
+  adds speculative decoding for 2-3x throughput gains and a native structured output
+  engine, making it viable for production agent pipelines.
+relevance_score: 0.91
+slug: vllm-v018-speculative-decoding-and-structured-output-engine
+sources:
+- title: GitHub — vllm-project/vllm
+  type: primary
+  url: https://github.com/vllm-project/vllm
+status: new
+tags:
+- vllm
+- inference
+- llm
+- speculative-decoding
+- performance
+title: 'vLLM v0.18: Speculative Decoding and Structured Output Engine'

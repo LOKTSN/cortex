@@ -1,0 +1,25 @@
+category: trending
+date: '2026-02-26'
+generated:
+  audio: false
+  diagrams: []
+  jingle: false
+  synthesis: true
+  video: false
+relevance_reason: This enables functional genomics directly in patient samples rather
+  than cell lines, revealing patient-specific vulnerabilities and resistance mechanisms.
+  Could accelerate precision medicine for AML and inform combination therapy development.
+relevance_score: 0.82
+slug: choppenn-crispr-platform-for-aml-patient-cells
+sources:
+- title: First CRISPR-based platform to pinpoint drivers of AML
+  type: primary
+  url: https://www.prnewswire.com/news-releases/childrens-hospital-of-philadelphia-and-penn-medicine-launch-first-crispr-based-platform-to-pinpoint-drivers-of-acute-myeloid-leukemia-in-patient-cells-302698641.html
+status: new
+tags:
+- cells
+- choppenn
+- crispr
+- patient
+- platform
+title: CHOP/Penn CRISPR Platform for AML Patient Cells

@@ -1,13 +1,42 @@
-field: "AI / ML"
+breaking_alerts: false
+custom_instructions: Im building an agent system, I care about tool use, MCP , multi
+  agent orchestration
+depth: technical
+field: AI / ML
+focus_areas:
+- AI agents
+- agentic workflows
+- multi-agent systems
+- autonomous agents
+- agent tool use
+goal: stay_current
+interval: daily_6am
+level: advanced
 sources:
-  - { id: "arxiv_ai", type: "arxiv", categories: ["cs.AI", "cs.LG", "cs.CL"], enabled: true }
-  - { id: "hn", type: "hackernews", filter: "AI", enabled: true }
-  - { id: "gh_ml", type: "github", filter: "trending/ML", enabled: true }
-  - { id: "reddit_ml", type: "reddit", subreddit: "MachineLearning", enabled: false }
-level: "advanced"
-depth: "technical"
-interval: "daily_6am"
-breaking_alerts: true
-focus_areas: ["training methods", "model deployment", "inference optimization"]
-goal: "stay_current"
+- categories:
+  - cs.AI
+  - cs.LG
+  - cs.CL
+  enabled: true
+  id: arxiv_ai
+  type: arxiv
+- enabled: true
+  filter: AI OR machine learning OR LLM OR AI agent OR agentic
+  id: hn
+  type: hackernews
+- enabled: true
+  id: reddit_ml
+  subreddits:
+  - MachineLearning
+  - LocalLLaMA
+  type: reddit
+- category: news
+  enabled: true
+  id: exa_ai
+  query: AI agents agentic AI multi-agent systems autonomous agents
+  type: exa
+- enabled: false
+  id: latent_space
+  name: Latent Space
+  type: podcast
 time_budget_min: 15

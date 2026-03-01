@@ -1,0 +1,28 @@
+category: trending
+date: '2026-02-24'
+generated:
+  audio: false
+  diagrams: []
+  jingle: false
+  synthesis: true
+  video: false
+relevance_reason: This breakthrough addresses a major limitation in rare disease research
+  - the ability to detect variants in previously inaccessible genomic regions. The
+  simplified workflow and pricing could enable broader clinical adoption of comprehensive
+  whole genome testing.
+relevance_score: 0.9
+slug: illumina-trupath-genome-launch
+sources:
+- title: Illumina launches TruPath Genome, setting a new standard in genomic insight
+  type: primary
+  url: https://www.illumina.com/company/news-center/press-releases/press-release-details.html?newsid=960974a8-171d-4c27-b2bd-82637ded77b1
+- title: Illumina Launches TruPath Genome
+  type: primary
+  url: https://www.prnewswire.com/news-releases/illumina-launches-trupath-genome-setting-a-new-standard-in-genomic-insight-302695923.html
+status: new
+tags:
+- genome
+- illumina
+- launch
+- trupath
+title: Illumina TruPath Genome Launch

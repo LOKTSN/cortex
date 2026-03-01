@@ -1,0 +1,25 @@
+category: trending
+date: '2026-02-24'
+generated:
+  audio: false
+  diagrams: []
+  jingle: false
+  synthesis: true
+  video: false
+relevance_reason: AlphaFold 3 predicts the structure of proteins, DNA, RNA, ligands,
+  and their complexes. Open-source model weights released. Transformative for drug
+  discovery and molecular biology research.
+relevance_score: 0.9
+slug: alphafold3-deepmind-protein-structure-prediction-expanded
+sources:
+- title: GitHub — google-deepmind/alphafold3
+  type: primary
+  url: https://github.com/google-deepmind/alphafold3
+status: new
+tags:
+- alphafold
+- protein
+- deepmind
+- biology
+- drug-discovery
+title: 'AlphaFold 3: DeepMind''s Universal Biomolecular Structure Prediction'

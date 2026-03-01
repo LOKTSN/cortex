@@ -6,6 +6,7 @@ export interface TopicDetail {
   date: string
   category: string
   synthesis: string
+  description?: string
   sources: { url: string; type: string; title?: string; points?: number }[]
   tags: string[]
   status: string
@@ -113,10 +114,15 @@ interface LearningState {
   error: string | null
   activeTab: string
   generatingMedia: Record<string, boolean>
+  // Generated media URLs (not persisted — refreshed per session)
+  diagramUrl: string | null
+  audioUrl: string | null
   fetchTopic: (slug: string) => Promise<void>
   setActiveTab: (tab: string) => void
   setGenerating: (media: string, state: boolean) => void
   updateNotes: (content: string) => void
+  generateDiagram: () => Promise<string | null>
+  generateAudio: () => Promise<string | null>
 }
 
 export const useLearningStore = create<LearningState>((set, get) => ({
@@ -125,8 +131,10 @@ export const useLearningStore = create<LearningState>((set, get) => ({
   error: null,
   activeTab: 'workspace',
   generatingMedia: {},
+  diagramUrl: null,
+  audioUrl: null,
   fetchTopic: async (slug: string) => {
-    set({ loading: true, error: null })
+    set({ loading: true, error: null, diagramUrl: null, audioUrl: null })
     try {
       const [metaRes, synthRes] = await Promise.all([
         fetch(`/api/topics/${slug}`),
@@ -135,10 +143,30 @@ export const useLearningStore = create<LearningState>((set, get) => ({
       if (!metaRes.ok) throw new Error('Topic not found')
       const meta = await metaRes.json()
       const synthesis = synthRes.ok ? await synthRes.text() : ''
+
+      // Check if audio/diagram already exist by fetching file list
+      let audioUrl: string | null = null
+      let diagramUrl: string | null = null
+      try {
+        const filesRes = await fetch(`/api/topics/${slug}/files`)
+        if (filesRes.ok) {
+          const files: { name: string }[] = await filesRes.json()
+          if (files.some(f => f.name === 'audio.mp3')) {
+            audioUrl = `/api/topics/${slug}/file/audio.mp3`
+          }
+          const diagramFile = files.find(f => f.name.startsWith('diagram_') && f.name.endsWith('.png'))
+          if (diagramFile) {
+            diagramUrl = `/api/topics/${slug}/file/${diagramFile.name}`
+          }
+        }
+      } catch { /* ignore */ }
+
       set({
         topic: { ...meta, synthesis, notes: '' },
         loading: false,
         activeTab: 'workspace',
+        audioUrl,
+        diagramUrl,
       })
     } catch {
       // Fallback to seed data
@@ -167,5 +195,63 @@ export const useLearningStore = create<LearningState>((set, get) => ({
   updateNotes: (content) => {
     const topic = get().topic
     if (topic) set({ topic: { ...topic, notes: content } })
+  },
+
+  generateDiagram: async () => {
+    const { topic } = get()
+    if (!topic) return null
+    set({ generatingMedia: { ...get().generatingMedia, diagram: true } })
+    try {
+      const res = await fetch(`/api/generate/diagram/${topic.slug}`, { method: 'POST' })
+      if (!res.ok) throw new Error('Diagram generation failed')
+      const data = await res.json()
+      if (data.status === 'done' && data.path) {
+        const diagramUrl = `/api/topics/${topic.slug}/file/${data.path}`
+        set({
+          diagramUrl,
+          generatingMedia: { ...get().generatingMedia, diagram: false },
+          topic: {
+            ...topic,
+            generated: { ...topic.generated, diagrams: [data.path] },
+          },
+        })
+        return diagramUrl
+      }
+      set({ generatingMedia: { ...get().generatingMedia, diagram: false } })
+      return null
+    } catch (e) {
+      console.error('Diagram generation error:', e)
+      set({ generatingMedia: { ...get().generatingMedia, diagram: false } })
+      return null
+    }
+  },
+
+  generateAudio: async () => {
+    const { topic } = get()
+    if (!topic) return null
+    set({ generatingMedia: { ...get().generatingMedia, audio: true } })
+    try {
+      const res = await fetch(`/api/generate/audio/${topic.slug}`, { method: 'POST' })
+      if (!res.ok) throw new Error('Audio generation failed')
+      const data = await res.json()
+      if (data.status === 'done' && data.path) {
+        const audioUrl = `/api/topics/${topic.slug}/file/audio.mp3`
+        set({
+          audioUrl,
+          generatingMedia: { ...get().generatingMedia, audio: false },
+          topic: {
+            ...topic,
+            generated: { ...topic.generated, audio: true },
+          },
+        })
+        return audioUrl
+      }
+      set({ generatingMedia: { ...get().generatingMedia, audio: false } })
+      return null
+    } catch (e) {
+      console.error('Audio generation error:', e)
+      set({ generatingMedia: { ...get().generatingMedia, audio: false } })
+      return null
+    }
   },
 }))

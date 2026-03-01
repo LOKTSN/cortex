@@ -1,0 +1,25 @@
+category: repo
+date: '2026-02-28'
+generated:
+  audio: false
+  diagrams: []
+  jingle: false
+  synthesis: true
+  video: false
+relevance_reason: From the creators of Pydantic — a type-safe agent framework that
+  leverages Pydantic's validation for structured LLM outputs. First-class support
+  for dependency injection, streaming, and Logfire observability.
+relevance_score: 0.86
+slug: pydantic-ai-type-safe-agent-framework-by-pydantic-team
+sources:
+- title: GitHub — pydantic/pydantic-ai
+  type: primary
+  url: https://github.com/pydantic/pydantic-ai
+status: new
+tags:
+- pydantic
+- agent
+- type-safety
+- python
+- structured-output
+title: 'PydanticAI: Type-Safe Agent Framework from the Pydantic Team'

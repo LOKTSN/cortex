@@ -1,0 +1,23 @@
+category: paper
+date: '2026-01-16'
+generated:
+  audio: false
+  diagrams: []
+  jingle: false
+  synthesis: true
+  video: false
+relevance_reason: Addresses a gap in RAG evaluation for documents combining textual
+  and tabular data, which is common in finance, business, and scientific domains.
+  Accepted to EACL 2026.
+relevance_score: 0.78
+slug: t²-ragbench-text-and-table-rag-benchmark
+sources:
+- title: T²-RAGBench paper on arXiv
+  type: primary
+  url: https://arxiv.org/abs/2506.12071
+status: new
+tags:
+- benchmark
+- text-and-table
+- t²-ragbench
+title: 'T²-RAGBench: Text-and-Table RAG Benchmark'

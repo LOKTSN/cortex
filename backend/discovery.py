@@ -266,23 +266,30 @@ def synthesize_topic(cluster: TopicCluster, profile: dict) -> str:
             parts.append(item.content_snippet[:500])
         source_texts.append("\n".join(parts))
 
-    prompt = f"""Write a concise synthesis of this topic for a personalized learning feed.
+    prompt = f"""You are writing for a personalized AI learning feed. Your reader is a {level}-level practitioner who wants {depth} coverage.
 
 Topic: {cluster.representative_title}
-User level: {level}
-Depth: {depth}
 
 Source material:
 {chr(10).join(source_texts)}
 
-Guidelines:
-- Start with a one-paragraph TL;DR
-- Then 2-3 key insights or developments
-- Adapt language to the user's level ({level}) and depth ({depth})
+Write a synthesis with this exact structure:
+
+**TL;DR** (2-3 sentences max): What happened and why it matters. Be specific — include names, versions, numbers, dates. A reader should learn something concrete from just this paragraph.
+
+**Key Insights** (2-3 numbered items, each with a bold heading): Each insight should be non-obvious. Don't restate the summary. Extract:
+- Technical mechanisms or architectural decisions
+- Quantitative results with baselines for comparison
+- Practical implications — what should a practitioner do differently?
+
+**Why This Matters** (1 sentence): Connect to the reader's work. Be concrete, not generic.
+
+Rules:
+- If sources cover DIFFERENT topics, pick the 1-2 most important and focus on those. Do NOT force unrelated items into one narrative.
 - If sources conflict, note the disagreement
-- End with "Why this matters" (one sentence)
-- Use markdown formatting
-- Keep it under 400 words"""
+- NEVER use filler: "the landscape is shifting", "this is significant because", "represents a paradigm shift", "noteworthy development"
+- Include specific numbers when available
+- Keep under 350 words. Use markdown formatting."""
 
     try:
         response = client.chat.completions.create(

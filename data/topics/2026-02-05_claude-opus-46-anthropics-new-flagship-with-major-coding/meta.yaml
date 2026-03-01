@@ -1,0 +1,31 @@
+category: trending
+date: '2026-02-05'
+generated:
+  audio: false
+  diagrams: []
+  jingle: false
+  synthesis: true
+  video: false
+relevance_reason: Sets new state-of-the-art for agentic coding tasks. SWE-bench Verified
+  at 80.8% and BrowseComp at 84.0% represent meaningful leads for production agent
+  systems. The 1M context window enables reasoning over very large codebases.
+relevance_score: 0.95
+slug: claude-opus-46-anthropics-new-flagship-with-major-coding
+sources:
+- title: Anthropic Official Announcement
+  type: primary
+  url: https://www.anthropic.com/news/claude-opus-4-6
+- title: Claude Opus 4.6 Details
+  type: primary
+  url: https://claudefa.st/blog/models/claude-opus-4-6
+status: new
+tags:
+- agentic
+- anthropics
+- claude
+- coding
+- flagship
+- improvements
+- major
+- opus
+title: 'Claude Opus 4.6: Anthropic''s New Flagship with Major Coding and Agentic Improvements'

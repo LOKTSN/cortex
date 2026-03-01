@@ -1,0 +1,28 @@
+category: trending
+date: '2026-02-26'
+generated:
+  audio: false
+  diagrams: []
+  jingle: false
+  synthesis: true
+  video: false
+relevance_reason: Production on-chain governance framework with explicit anti-capture
+  mechanisms (identity aging, ETC-domain binding, non-transferable voting). Represents
+  mature DAO design patterns beyond simple token voting.
+relevance_score: 0.82
+slug: olympia-dao-governance-framework-on-chain-treasury
+sources:
+- title: 'ECIP 1113: Olympia DAO Governance Framework'
+  type: primary
+  url: https://ecips.ethereumclassic.org/ECIPs/ecip-1113
+status: new
+tags:
+- classic
+- ethereum
+- framework
+- governance
+- olympia
+- on-chain
+- treasury
+title: Olympia DAO Governance Framework - On-Chain Treasury Governance for Ethereum
+  Classic

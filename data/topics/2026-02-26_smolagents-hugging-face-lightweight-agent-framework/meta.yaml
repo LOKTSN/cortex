@@ -1,0 +1,25 @@
+category: repo
+date: '2026-02-26'
+generated:
+  audio: false
+  diagrams: []
+  jingle: false
+  synthesis: true
+  video: false
+relevance_reason: Hugging Face's official agent framework. Agents write Python code
+  instead of JSON tool calls — more flexible and debuggable. Tight integration with
+  the HF ecosystem (models, datasets, spaces).
+relevance_score: 0.86
+slug: smolagents-hugging-face-lightweight-agent-framework
+sources:
+- title: GitHub — huggingface/smolagents
+  type: primary
+  url: https://github.com/huggingface/smolagents
+status: new
+tags:
+- smolagents
+- hugging-face
+- agent
+- code-execution
+- lightweight
+title: 'smolagents: Hugging Face''s Lightweight Agent Framework with Code Execution'

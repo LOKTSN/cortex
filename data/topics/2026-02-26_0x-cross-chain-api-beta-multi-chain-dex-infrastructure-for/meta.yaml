@@ -1,0 +1,27 @@
+category: trending
+date: '2026-02-26'
+generated:
+  audio: false
+  diagrams: []
+  jingle: false
+  synthesis: true
+  video: false
+relevance_reason: First production-grade developer solution abstracting cross-chain
+  complexity for autonomous trading agents. Integrates with emerging agent payment
+  standards (x402, Google AP2, OpenAI ACP), positioning DeFi infrastructure for agentic
+  commerce.
+relevance_score: 0.88
+slug: 0x-cross-chain-api-beta-multi-chain-dex-infrastructure-for
+sources:
+- title: 0x Launches Cross-Chain API Beta
+  type: primary
+  url: https://www.prnewswire.com/news-releases/0x-launches-cross-chain-api-beta-to-power-agentic-swaps-across-blockchains-302698777.html
+status: new
+tags:
+- agentic
+- beta
+- cross-chain
+- infrastructure
+- multi-chain
+- trading
+title: 0x Cross-Chain API Beta - Multi-Chain DEX Infrastructure for Agentic Trading

@@ -1,0 +1,25 @@
+category: trending
+date: '2026-02-23'
+generated:
+  audio: false
+  diagrams: []
+  jingle: false
+  synthesis: true
+  video: false
+relevance_reason: Advances the trend toward ultra-high-throughput, low-cost sequencing
+  needed for population-scale genomics projects and large research consortia. Enables
+  larger studies at lower per-sample cost.
+relevance_score: 0.7
+slug: ultima-genomics-ug200-series-launch
+sources:
+- title: Ultima Genomics UG200 Series Launch
+  type: primary
+  url: https://www.prnewswire.com/news-releases/ultima-genomics-introduces-the-next-generation-of-sequencing-at-scale-with-the-launch-of-the-ug200-series-and-next-generation-solaris-2-0-workflows-delivering-higher-output-better-performance-and-more-flexible-wafer-configuratio-302694374.html
+status: new
+tags:
+- genomics
+- launch
+- series
+- ug200
+- ultima
+title: Ultima Genomics UG200 Series Launch

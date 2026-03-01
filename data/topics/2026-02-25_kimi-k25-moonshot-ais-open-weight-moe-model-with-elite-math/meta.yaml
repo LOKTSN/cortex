@@ -1,0 +1,28 @@
+category: trending
+date: '2026-02-25'
+generated:
+  audio: false
+  diagrams: []
+  jingle: false
+  synthesis: true
+  video: false
+relevance_reason: Strong alternative for math/science workloads at significantly lower
+  cost. Open weights enable self-hosting and fine-tuning. The Agent Swarm feature
+  shows 18-point improvement on BrowseComp (78.4% vs 60.6% single-agent), demonstrating
+  genuine capability multiplication.
+relevance_score: 0.82
+slug: kimi-k25-moonshot-ais-open-weight-moe-model-with-elite-math
+sources:
+- title: Kimi K2.5 vs Claude Comparison
+  type: secondary
+  url: https://awesomeagents.ai/tools/kimi-k2-5-vs-claude-opus-4-6/
+status: new
+tags:
+- elite
+- kimi
+- math
+- model
+- moonshot
+- open-weight
+- performance
+title: 'Kimi K2.5: Moonshot AI''s Open-Weight MoE Model with Elite Math Performance'

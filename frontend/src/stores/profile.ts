@@ -7,7 +7,9 @@ export interface Source {
   categories?: string[]
   filter?: string
   subreddit?: string
+  subreddits?: string[]
   enabled: boolean
+  [key: string]: unknown
 }
 
 export interface Profile {
@@ -20,17 +22,17 @@ export interface Profile {
   focus_areas: string[]
   goal: 'stay_current' | 'prepare_exams' | 'teach_others'
   time_budget_min: number
+  custom_instructions?: string
 }
 
 const SEED_PROFILE: Profile = {
   field: 'AI / ML',
   sources: [
     { id: 'arxiv_ai', type: 'arxiv', categories: ['cs.AI', 'cs.LG', 'cs.CL'], enabled: true },
-    { id: 'hn', type: 'hackernews', filter: 'AI', enabled: true },
-    { id: 'gh_ml', type: 'github', filter: 'trending/ML', enabled: true },
-    { id: 'reddit_ml', type: 'reddit', subreddit: 'MachineLearning', enabled: false },
-    { id: 'latent_space', type: 'podcast', name: 'Latent Space', enabled: true },
-    { id: 'twitter_ai', type: 'twitter', filter: 'AI researchers', enabled: false },
+    { id: 'hn', type: 'hackernews', filter: 'AI OR machine learning OR LLM', enabled: true },
+    { id: 'reddit_ml', type: 'reddit', subreddits: ['MachineLearning', 'LocalLLaMA'], enabled: true },
+    { id: 'exa_ai', type: 'exa', query: 'AI machine learning LLM agents', category: 'news', enabled: true },
+    { id: 'latent_space', type: 'podcast', name: 'Latent Space', enabled: false },
   ],
   level: 'advanced',
   depth: 'technical',
@@ -47,6 +49,7 @@ interface ProfileState {
   saving: boolean
   fetchProfile: () => Promise<void>
   updateProfile: (updates: Partial<Profile>) => Promise<void>
+  applyPreset: (preset: Partial<Profile>) => Promise<void>
   toggleSource: (sourceId: string) => void
   addFocusArea: (area: string) => void
   removeFocusArea: (area: string) => void
@@ -75,6 +78,22 @@ export const useProfileStore = create<ProfileState>((set, get) => ({
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(updates),
+      })
+    } catch {
+      // Silently fail — local state is updated
+    } finally {
+      set({ saving: false })
+    }
+  },
+  applyPreset: async (preset) => {
+    const current = get().profile
+    const newProfile = { ...current, ...preset }
+    set({ profile: newProfile, saving: true })
+    try {
+      await fetch('/api/profile', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(newProfile),
       })
     } catch {
       // Silently fail — local state is updated

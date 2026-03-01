@@ -1,0 +1,33 @@
+category: paper
+date: '2026-02-27'
+generated:
+  audio: false
+  diagrams: []
+  jingle: false
+  synthesis: true
+  video: false
+relevance_reason: Significant breakthrough in amortized LLM customization. Enables
+  sub-second adaptation vs. 40-100 seconds for traditional context distillation. Reduces
+  memory footprint by 240x for long documents. Supports cross-modal transfer from
+  VLM to text-only LLM.
+relevance_score: 0.9
+slug: sakana-ai-doc-to-lora-and-text-to-lora-hypernetworks-for
+sources:
+- title: Sakana AI Doc-to-LoRA Announcement
+  type: secondary
+  url: https://www.marktechpost.com/2026/02/27/sakana-ai-introduces-doc-to-lora-and-text-to-lora-hypernetworks-that-instantly-internalize-long-contexts-and-adapt-llms-via-zero-shot-natural-language/
+- title: Doc-to-LoRA Paper
+  type: primary
+  url: https://arxiv.org/abs/2602.15902
+- title: Doc-to-LoRA Code
+  type: primary
+  url: https://github.com/SakanaAI/Doc-to-LoRA
+status: new
+tags:
+- adaptation
+- doc-to-lora
+- hypernetworks
+- instant
+- sakana
+- text-to-lora
+title: 'Sakana AI Doc-to-LoRA and Text-to-LoRA: Hypernetworks for Instant LLM Adaptation'

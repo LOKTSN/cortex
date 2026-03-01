@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef, useCallback } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import {
-  ArrowLeft, Headphones, Video, Image, Music, Loader2,
+  ArrowLeft, Headphones, Image, Loader2, Play, Pause,
   Calendar, BookX, StickyNote, Sparkles, FileText, PenLine,
 } from 'lucide-react'
 import { useLearningStore } from '@/stores/learning'
@@ -14,14 +14,16 @@ import remarkGfm from 'remark-gfm'
 
 const studioItems = [
   { type: 'audio' as const, icon: Headphones, label: 'Audio Overview' },
-  { type: 'video' as const, icon: Video, label: 'Video Explainer' },
-  { type: 'diagram' as const, icon: Image, label: 'Mind Map' },
-  { type: 'jingle' as const, icon: Music, label: 'Jingle' },
+  { type: 'diagram' as const, icon: Image, label: 'Diagram' },
 ]
 
 export function LearningPage() {
   const { slug } = useParams<{ slug: string }>()
-  const { topic, loading, fetchTopic, updateNotes } = useLearningStore()
+  const {
+    topic, loading, fetchTopic, updateNotes,
+    generatingMedia, generateDiagram, generateAudio,
+    diagramUrl, audioUrl,
+  } = useLearningStore()
   const [activeStudio, setActiveStudio] = useState<string | null>(null)
 
   useEffect(() => {
@@ -43,20 +45,39 @@ export function LearningPage() {
         <BookX size={32} className="text-[var(--color-text-ghost)]" />
         <p className="text-sm text-[var(--color-text-muted)]">Topic not found</p>
         <Button variant="ghost" asChild className="mt-2">
-          <Link to="/pulse">Back to Pulse</Link>
+          <Link to="/">Back</Link>
         </Button>
       </div>
     )
   }
 
+  // Build rich context for the agent — it should know what topic folder it's in
+  const agentContext = [
+    `Topic: ${topic.title}`,
+    `Category: ${topic.category}`,
+    `Date: ${topic.date}`,
+    topic.tags.length > 0 ? `Tags: ${topic.tags.join(', ')}` : '',
+    topic.description ? `Description: ${topic.description}` : '',
+    `\nSynthesis:\n${topic.synthesis}`,
+    topic.notes ? `\nUser Notes:\n${topic.notes}` : '',
+  ].filter(Boolean).join('\n')
+
+  const handleGenerate = async (type: string) => {
+    if (type === 'diagram') {
+      await generateDiagram()
+    } else if (type === 'audio') {
+      await generateAudio()
+    }
+  }
+
   return (
-    <div className="flex h-full animate-fade-in">
+    <div className="flex h-[calc(100dvh-57px)] animate-fade-in overflow-hidden">
       {/* ── Left: Sources panel ── */}
       <div className="w-72 shrink-0 bg-white border-r border-[var(--color-border)] flex flex-col">
         <div className="px-4 py-3 border-b border-[var(--color-border)] flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Button variant="ghost" size="icon-sm" asChild>
-              <Link to="/pulse">
+              <Link to="/">
                 <ArrowLeft size={14} />
               </Link>
             </Button>
@@ -119,8 +140,8 @@ export function LearningPage() {
       <div className="flex-1 min-w-0 bg-white border-r border-[var(--color-border)] flex flex-col">
         <ChatPanel
           title="Chat"
-          initialMessage={`I'm ready to help you explore "${topic.title}". Ask me anything, or I can generate audio briefings, diagrams, and more.`}
-          context={JSON.stringify({ title: topic.title, slug: topic.slug, tags: topic.tags })}
+          initialMessage={`I'm ready to help you explore "${topic.title}". I have the full synthesis and can search for more information, explain concepts, or generate diagrams. Ask me anything!`}
+          context={agentContext}
         />
       </div>
 
@@ -133,11 +154,8 @@ export function LearningPage() {
         <div className="p-4">
           <div className="grid grid-cols-2 gap-2">
             {studioItems.map(({ type, icon: Icon, label }) => {
-              const isGenerated =
-                type === 'audio' ? topic.generated.audio :
-                type === 'video' ? topic.generated.video :
-                type === 'diagram' ? topic.generated.diagrams.length > 0 :
-                topic.generated.jingle
+              const isGenerated = type === 'audio' ? !!audioUrl : type === 'diagram' ? !!diagramUrl : false
+              const isGenerating = generatingMedia[type] || false
               return (
                 <button
                   key={type}
@@ -146,9 +164,16 @@ export function LearningPage() {
                     activeStudio === type ? 'bg-[var(--bg-card-hover)] border-[var(--color-border-strong)]' : ''
                   }`}
                 >
-                  <Icon size={18} className={`mb-2 ${isGenerated ? 'text-[var(--color-accent)]' : 'text-[var(--color-text-subtle)]'}`} />
+                  {isGenerating ? (
+                    <Loader2 size={18} className="mb-2 animate-spin text-[var(--color-accent)]" />
+                  ) : (
+                    <Icon size={18} className={`mb-2 ${isGenerated ? 'text-[var(--color-accent)]' : 'text-[var(--color-text-subtle)]'}`} />
+                  )}
                   <span className="text-xs font-medium text-[var(--color-text)] block">{label}</span>
-                  {isGenerated && (
+                  {isGenerating && (
+                    <span className="text-[10px] text-[var(--color-accent)] mt-0.5 block">Generating...</span>
+                  )}
+                  {isGenerated && !isGenerating && (
                     <span className="text-[10px] text-[var(--color-accent)] mt-0.5 block">Ready</span>
                   )}
                 </button>
@@ -157,17 +182,24 @@ export function LearningPage() {
           </div>
         </div>
 
-        {/* Active studio content or empty state */}
+        {/* Active studio content */}
         <div className="flex-1 flex flex-col min-h-0 px-4 pb-4">
           {activeStudio ? (
-            <StudioContent type={activeStudio as 'audio' | 'video' | 'diagram' | 'jingle'} slug={topic.slug} topic={topic} />
+            <StudioContent
+              type={activeStudio as 'audio' | 'diagram'}
+              slug={topic.slug}
+              diagramUrl={diagramUrl}
+              audioUrl={audioUrl}
+              isGenerating={generatingMedia[activeStudio] || false}
+              onGenerate={() => handleGenerate(activeStudio)}
+            />
           ) : (
             <div className="flex-1 flex items-center justify-center text-center">
               <div>
                 <Sparkles size={24} className="mx-auto mb-3 text-[var(--color-text-ghost)]" />
                 <p className="text-sm text-[var(--color-text-muted)]">Studio output will be saved here.</p>
                 <p className="text-xs text-[var(--color-text-subtle)] mt-1 max-w-[200px] mx-auto">
-                  Click to add Audio Overview, Video Explainer, and more!
+                  Click to add Audio Overview, Diagrams, and more!
                 </p>
               </div>
             </div>
@@ -186,37 +218,161 @@ export function LearningPage() {
   )
 }
 
-function StudioContent({ type, slug, topic }: { type: 'audio' | 'video' | 'diagram' | 'jingle'; slug: string; topic: { generated: { audio: boolean; video: boolean; diagrams: string[]; jingle: boolean } } }) {
-  const config = {
-    audio: { file: 'audio.mp3', label: 'Audio Overview' },
-    video: { file: 'video.mp4', label: 'Video Explainer' },
-    diagram: { file: 'diagram_1.png', label: 'Mind Map' },
-    jingle: { file: 'jingle.mp3', label: 'Jingle' },
-  }
-  const { file, label } = config[type]
-  const mediaUrl = `/api/topics/${slug}/file/${file}`
-  const isGenerated =
-    type === 'audio' ? topic.generated.audio :
-    type === 'video' ? topic.generated.video :
-    type === 'diagram' ? topic.generated.diagrams.length > 0 :
-    topic.generated.jingle
+/** Custom audio player using Web Audio API — bypasses <audio> element issues */
+function WebAudioPlayer({ url }: { url: string }) {
+  const ctxRef = useRef<AudioContext | null>(null)
+  const bufferRef = useRef<AudioBuffer | null>(null)
+  const sourceRef = useRef<AudioBufferSourceNode | null>(null)
+  const startTimeRef = useRef(0)
+  const offsetRef = useRef(0)
 
-  if (isGenerated) {
+  const [loading, setLoading] = useState(true)
+  const [playing, setPlaying] = useState(false)
+  const [duration, setDuration] = useState(0)
+  const [currentTime, setCurrentTime] = useState(0)
+
+  // Decode audio on mount
+  useEffect(() => {
+    let cancelled = false
+    const ctx = new AudioContext()
+    ctxRef.current = ctx
+
+    fetch(url)
+      .then(r => r.arrayBuffer())
+      .then(buf => ctx.decodeAudioData(buf))
+      .then(decoded => {
+        if (cancelled) return
+        bufferRef.current = decoded
+        setDuration(decoded.duration)
+        setLoading(false)
+      })
+      .catch(() => setLoading(false))
+
+    return () => {
+      cancelled = true
+      sourceRef.current?.stop()
+      ctx.close()
+    }
+  }, [url])
+
+  // Update time while playing
+  useEffect(() => {
+    if (!playing) return
+    const id = setInterval(() => {
+      const ctx = ctxRef.current
+      if (ctx) setCurrentTime(offsetRef.current + ctx.currentTime - startTimeRef.current)
+    }, 250)
+    return () => clearInterval(id)
+  }, [playing])
+
+  const play = useCallback(() => {
+    const ctx = ctxRef.current
+    const buffer = bufferRef.current
+    if (!ctx || !buffer) return
+
+    if (ctx.state === 'suspended') ctx.resume()
+
+    const source = ctx.createBufferSource()
+    source.buffer = buffer
+    source.connect(ctx.destination)
+    source.onended = () => {
+      setPlaying(false)
+      offsetRef.current = 0
+      setCurrentTime(0)
+    }
+
+    startTimeRef.current = ctx.currentTime
+    source.start(0, offsetRef.current)
+    sourceRef.current = source
+    setPlaying(true)
+  }, [])
+
+  const pause = useCallback(() => {
+    const ctx = ctxRef.current
+    if (ctx && sourceRef.current) {
+      offsetRef.current += ctx.currentTime - startTimeRef.current
+      sourceRef.current.stop()
+      sourceRef.current = null
+      setPlaying(false)
+    }
+  }, [])
+
+  const fmt = (s: number) => {
+    const m = Math.floor(s / 60)
+    const sec = Math.floor(s % 60)
+    return `${m}:${sec.toString().padStart(2, '0')}`
+  }
+
+  if (loading) {
+    return (
+      <div className="flex items-center gap-2 text-xs text-[var(--color-text-subtle)]">
+        <Loader2 size={14} className="animate-spin" /> Loading audio...
+      </div>
+    )
+  }
+
+  const progress = duration > 0 ? (currentTime / duration) * 100 : 0
+
+  return (
+    <div className="flex items-center gap-3">
+      <button
+        onClick={playing ? pause : play}
+        className="w-8 h-8 rounded-full bg-[var(--color-accent)] text-white flex items-center justify-center hover:opacity-90 transition-opacity shrink-0"
+      >
+        {playing ? <Pause size={14} /> : <Play size={14} className="ml-0.5" />}
+      </button>
+      <div className="flex-1 min-w-0">
+        <div className="h-1.5 bg-[var(--bg-raised)] rounded-full overflow-hidden">
+          <div
+            className="h-full bg-[var(--color-accent)] rounded-full transition-[width] duration-200"
+            style={{ width: `${progress}%` }}
+          />
+        </div>
+        <div className="flex justify-between mt-1">
+          <span className="text-[10px] text-[var(--color-text-subtle)]">{fmt(currentTime)}</span>
+          <span className="text-[10px] text-[var(--color-text-subtle)]">{fmt(duration)}</span>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function StudioContent({
+  type,
+  slug,
+  diagramUrl,
+  audioUrl,
+  isGenerating,
+  onGenerate,
+}: {
+  type: 'audio' | 'diagram'
+  slug: string
+  diagramUrl: string | null
+  audioUrl: string | null
+  isGenerating: boolean
+  onGenerate: () => void
+}) {
+  const labels = { audio: 'Audio Overview', diagram: 'Diagram' }
+  const label = labels[type]
+  const mediaReady = type === 'audio' ? !!audioUrl : type === 'diagram' ? !!diagramUrl : false
+
+  if (isGenerating) {
+    return (
+      <div className="flex-1 flex flex-col items-center justify-center text-center animate-fade-in">
+        <Loader2 size={24} className="animate-spin text-[var(--color-accent)] mb-3" />
+        <p className="text-sm text-[var(--color-text-muted)]">Generating {label.toLowerCase()}...</p>
+        <p className="text-xs text-[var(--color-text-subtle)] mt-1">This may take a moment</p>
+      </div>
+    )
+  }
+
+  if (mediaReady) {
     return (
       <div className="animate-fade-in">
         <p className="text-xs font-medium text-[var(--color-text-muted)] mb-2">{label}</p>
-        {(type === 'audio' || type === 'jingle') && (
-          <audio controls className="w-full" src={mediaUrl}>
-            Your browser does not support audio playback.
-          </audio>
-        )}
-        {type === 'video' && (
-          <video controls className="w-full rounded-lg" src={mediaUrl}>
-            Your browser does not support video playback.
-          </video>
-        )}
-        {type === 'diagram' && (
-          <img src={mediaUrl} alt="AI-generated diagram" className="w-full rounded-lg border border-[var(--color-border)]" />
+        {type === 'audio' && audioUrl && <WebAudioPlayer url={audioUrl} />}
+        {type === 'diagram' && diagramUrl && (
+          <img src={diagramUrl} alt="AI-generated diagram" className="w-full rounded-lg border border-[var(--color-border)]" />
         )}
       </div>
     )
@@ -225,7 +381,7 @@ function StudioContent({ type, slug, topic }: { type: 'audio' | 'video' | 'diagr
   return (
     <div className="flex-1 flex flex-col items-center justify-center text-center animate-fade-in">
       <p className="text-sm text-[var(--color-text-muted)] mb-3">Generate {label.toLowerCase()}?</p>
-      <Button variant="default" size="sm" className="gap-1.5">
+      <Button variant="default" size="sm" className="gap-1.5" onClick={onGenerate}>
         <Sparkles size={12} />
         Generate
       </Button>

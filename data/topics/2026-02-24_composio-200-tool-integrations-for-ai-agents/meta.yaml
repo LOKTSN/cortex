@@ -1,0 +1,26 @@
+category: repo
+date: '2026-02-24'
+generated:
+  audio: false
+  diagrams: []
+  jingle: false
+  synthesis: true
+  video: false
+relevance_reason: Composio provides 200+ pre-built tool integrations for AI agents
+  — GitHub, Slack, Jira, databases, and more. Handles OAuth, rate limiting, and schema
+  generation. The 'Zapier for AI agents'.
+relevance_score: 0.82
+slug: composio-200-tool-integrations-for-ai-agents
+sources:
+- title: GitHub — ComposioHQ/composio
+  type: primary
+  url: https://github.com/ComposioHQ/composio
+status: new
+tags:
+- composio
+- tools
+- integrations
+- agent
+- api
+title: 'Composio: 200+ Tool Integrations for AI Agents — GitHub, Slack, Jira, and
+  More'

@@ -1,0 +1,28 @@
+category: repo
+date: '2026-02-24'
+generated:
+  audio: false
+  diagrams: []
+  jingle: false
+  synthesis: true
+  video: false
+relevance_reason: Apple's MLX framework enables running LLMs natively on M-series
+  chips with unified memory. MLX-LM provides ready-to-use model conversions. Critical
+  for on-device AI agents and privacy-preserving inference.
+relevance_score: 0.85
+slug: mlx-swift-and-mlx-lm-apple-silicon-native-ml-framework
+sources:
+- title: GitHub — ml-explore/mlx
+  type: primary
+  url: https://github.com/ml-explore/mlx
+- title: GitHub — ml-explore/mlx-lm
+  type: secondary
+  url: https://github.com/ml-explore/mlx-lm
+status: new
+tags:
+- mlx
+- apple-silicon
+- on-device
+- inference
+- local-llm
+title: 'MLX & MLX-LM: Apple Silicon-Native ML Framework for On-Device LLMs'

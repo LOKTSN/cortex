@@ -1,0 +1,26 @@
+category: trending
+date: '2026-02-26'
+generated:
+  audio: false
+  diagrams: []
+  jingle: false
+  synthesis: true
+  video: false
+relevance_reason: Significant blockchain infrastructure improvement addressing validator
+  geography bias. Non-consensus CDN layer is optional and fail-safe. Every validator
+  running it improves global block finalization and reduces forks.
+relevance_score: 0.88
+slug: solanacdn-open-source-validator-client-with-built-in
+sources:
+- title: Pipe Network Launches SolanaCDN
+  type: primary
+  url: https://chainwire.org/2026/02/26/pipe-network-launches-solanacdn-a-free-open-source-validator-client-with-built-in-acceleration-for-solana/
+status: new
+tags:
+- acceleration
+- built-in
+- client
+- open-source
+- solanacdn
+- validator
+title: 'SolanaCDN: Open-Source Validator Client with Built-In Acceleration'

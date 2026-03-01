@@ -1,0 +1,32 @@
+category: trending
+date: '2026-02-24'
+generated:
+  audio: false
+  diagrams: []
+  jingle: false
+  synthesis: true
+  video: false
+relevance_reason: Represents a new paradigm in agent frameworks - moving beyond chatbot-style
+  interaction to continuously running autonomous agents. Includes 16 discrete security
+  layers, 40 channel adapters, and WASM sandboxing. Significantly faster cold start
+  (180ms) vs competitors.
+relevance_score: 0.85
+slug: openfang-agent-operating-system-built-in-rust-with
+sources:
+- title: OpenFang GitHub
+  type: primary
+  url: https://github.com/RightNow-AI/openfang
+- title: Documentation
+  type: primary
+  url: https://openfang.sh/docs
+status: new
+tags:
+- agent
+- autonomous
+- built
+- hands
+- openfang
+- operating
+- rust
+- system
+title: 'OpenFang: Agent Operating System Built in Rust with Autonomous Hands'

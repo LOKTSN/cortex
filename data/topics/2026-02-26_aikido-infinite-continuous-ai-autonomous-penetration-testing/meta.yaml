@@ -1,0 +1,26 @@
+category: trending
+date: '2026-02-26'
+generated:
+  audio: false
+  diagrams: []
+  jingle: false
+  synthesis: true
+  video: false
+relevance_reason: First 'self-securing software' platform addressing gap between deployment
+  frequency and security validation. 85% of security findings outdated by time analysis
+  arrives.
+relevance_score: 0.82
+slug: aikido-infinite-continuous-ai-autonomous-penetration-testing
+sources:
+- title: Introducing Aikido Infinite
+  type: primary
+  url: https://www.aikido.dev/blog/introducing-aikido-infinite
+status: new
+tags:
+- aikido
+- autonomous
+- continuous
+- infinite
+- penetration
+- testing
+title: Aikido Infinite - Continuous AI Autonomous Penetration Testing

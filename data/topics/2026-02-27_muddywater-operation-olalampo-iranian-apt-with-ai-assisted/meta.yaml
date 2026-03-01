@@ -1,0 +1,25 @@
+category: trending
+date: '2026-02-27'
+generated:
+  audio: false
+  diagrams: []
+  jingle: false
+  synthesis: true
+  video: false
+relevance_reason: First observed January 2026. Demonstrates nation-state actors leveraging
+  AI for malware development. Novel Rust-based backdoor with Telegram-based C2.
+relevance_score: 0.85
+slug: muddywater-operation-olalampo-iranian-apt-with-ai-assisted
+sources:
+- title: MuddyWater Operation Olalampo Technical Analysis
+  type: primary
+  url: https://secpro.substack.com/p/muddywater-operation-olalampo
+status: new
+tags:
+- ai-assisted
+- iranian
+- malware
+- muddywater
+- olalampo
+- operation
+title: MuddyWater Operation Olalampo - Iranian APT with AI-Assisted Malware
